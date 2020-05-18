@@ -10,12 +10,17 @@
 #include<time.h>
 #include<thread>
 #include<stdlib.h>
+#include<conio.h>
 #include <iostream>
 using namespace std;
 
 void FixConsoleWindow();
 void GotoXY(int x, int y);
 void TextColor(int color);
+
+/***************Cac ham tao giao dien game***************/
+void Loading();
+void Menu();
 
 #endif // !_SNAKE_
 
