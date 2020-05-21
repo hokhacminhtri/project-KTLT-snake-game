@@ -83,11 +83,7 @@ void NewGame(){
 	timer.frameRate = double(1) / 15;
 	timer.deltaTime = 0;
 	SNAKE* snake = initSnake();
-	POS tail = { 5, 4, '8' };
-	POS tail1 = { 5, 3, '1' };
-	POS fruit = { 10, 10, '2' };
-	pushTopTail(snake, tail);
-	pushTopTail(snake, tail1);
+	POS fruit = {3, 3, '8'};
 	renderSnake(snake);
 	drawChar(fruit.x, fruit.y, 13, fruit.c);
 	while (true) {
@@ -120,14 +116,12 @@ int Input(SNAKE* snake){
 }
 
 void Update(SNAKE* snake, POS& fruit){
-	if (snake->length == 1) {
+	if (snake->length == 1 && snake->prevEat == false) {
 		drawChar(snake->body[0].x, snake->body[0].y, headColor, space);
 	}
 	else {
-		if (snake->prevEat == 0) {
+		if (snake->prevEat == false) {
 			drawChar(snake->body[snake->length - 1].x, snake->body[snake->length - 1].y, green, space);
-			drawChar(snake->body[0].x, snake->body[0].y, tailColor, snake->body[1].c);
-
 			for (int i = snake->length - 1; i >= 1; i--) {
 				snake->body[i].x = snake->body[i - 1].x;
 				snake->body[i].y = snake->body[i - 1].y;
@@ -136,7 +130,11 @@ void Update(SNAKE* snake, POS& fruit){
 		else {
 			snake->prevEat = false;
 			pushTopTail(snake, fruit);
-			drawChar(snake->body[0].x, snake->body[0].y, green, snake->body[0].c);
+			fruit.x = snake->body[0].x + 3;//
+			fruit.y = snake->body[0].y + 3;//
+			fruit.c = '1';//
+			drawChar(fruit.x, fruit.y, 13, fruit.c);//
+			// tao fruit moi
 		}
 	}
 	if (snake->dir == up) snake->body[0].y--;
