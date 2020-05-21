@@ -1,4 +1,6 @@
 #pragma once
+#include<iostream>
+using namespace std;
 
 struct POS {
 	int x;
@@ -17,3 +19,4 @@ struct SNAKE {
 SNAKE* initSnake() ;
 void pushTopTail(SNAKE* snake, POS newTail);
 void renderSnake(SNAKE* snake);
+void deleteSnake(SNAKE* snake);
