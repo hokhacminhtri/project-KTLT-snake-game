@@ -67,6 +67,8 @@ bool checkCollision(SNAKE* snake,POS* gate){
 	{
 		if ((snake->body[0].x == gate[0].x && snake->body[0].y == gate[0].y) || (snake->body[0].x == gate[3].x && snake->body[0].y == gate[3].y))
 			return true;
+		if ((snake->body[0].x == gate[1].x && snake->body[0].y == gate[1].y-1) || (snake->body[0].x == gate[2].x && snake->body[0].y == gate[2].y-1))
+			return true;
 	}
 	return false;
 }
