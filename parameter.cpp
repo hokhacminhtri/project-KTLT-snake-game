@@ -62,3 +62,5 @@ void drawStr(int x, int y, int color, string longString) {
 	SetConsoleCursorInfo(hStdout, &info);
 	// Remove cursor 
 }
+
+
