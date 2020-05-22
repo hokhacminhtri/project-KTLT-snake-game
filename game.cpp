@@ -12,7 +12,7 @@ void drawBoard(int x, int y, int width, int height)
 	for (int i = 0; i < width; i++)
 		cout << 'X';
 	cout << 'X';
-	for(int i=y+1;i<height+y;i++)
+	for (int i = y + 1; i < height + y; i++)
 	{
 		GotoXY(x, i);
 		cout << 'X';
@@ -20,6 +20,7 @@ void drawBoard(int x, int y, int width, int height)
 		cout << 'X';
 	}
 }
+
 void Loading() {
 	TextColor(12);
 	GotoXY(25, 12);
@@ -49,41 +50,126 @@ void Loading() {
 	TextColor(7);
 }
 
+void Option(int option1, int option2) {
+	if (option1 == 1) {
+		if (option2 == 2) {
+			GotoXY(25, 10);
+			cout << " ";
+			GotoXY(70, 10);
+			cout << " ";
+		}
+		GotoXY(25, 9);
+		cout << "[";
+		GotoXY(50, 9);
+		cout << "]";
+	}
+	if (option1 == 2) {
+		if (option2 == 1) {
+			GotoXY(25, 9);
+			cout << " ";
+			GotoXY(50, 9);
+			cout << " ";
+		}
+		if (option2 == 3) {
+			GotoXY(25, 11);
+			cout << " ";
+			GotoXY(50, 11);
+			cout << " ";
+		}
+		GotoXY(25, 10);
+		cout << "[";
+		GotoXY(70, 10);
+		cout << "]";
+	}
+	if (option1 == 3) {
+		if (option2 == 2) {
+			GotoXY(25, 10);
+			cout << " ";
+			GotoXY(70, 10);
+			cout << " ";
+		}
+		GotoXY(25, 11);
+		cout << "[";
+		GotoXY(50, 11);
+		cout << "]";
+	}
+}
+
 void Menu() {
-	int choose;
+	int option1 = 1;
+	int option2 = 0;
 
-	do {
+	system("cls");
+	GotoXY(30, 9);
+	cout << "PLAY GAME" << endl;
+	GotoXY(30, 10);
+	cout << "ABOUT (thong tin cac thanh vien nhom)" << endl;
+	GotoXY(30, 11);
+	cout << "END GAME" << endl;
+
+	Option(option1, option2);
+	while (1) {
+		int h;
+		if (_kbhit()) {
+			h = _getch();
+			if (h == 13)
+				break;
+			if (h == 80) {
+				if (option1 < 8) {
+					option2 = option1;
+					option1++;
+					Option(option1, option2);
+				}
+			}
+			if (h == 72) {
+				if (option1 > 1) {
+					option2 = option1;
+					option1--;
+					Option(option1, option2);
+				}
+			}
+		}
+	}
+
+	if (option1 == 1) {
 		system("cls");
-		cout << "1. Play Game" << endl;
-		cout << "2. About (thong tin cac thanh vien nhom)" << endl;
-		cout << "0. Thoat chuong trinh" << endl;
+		drawBoard(0, 0, WIDTH_CONSOLE, HEIGHT_CONSOLE);
+		NewGame();
 
-		cout << "\nChon bai: " << endl;
-		cin >> choose;
+		system("pause");
+		while (1)
+			if (_kbhit())
+			{
+				int in = _getch();
+				if (in == 13)
+					system("cls");
+				break;
+			}
+		Menu();
+	}
+	if (option1 == 2) {
 		system("cls");
 
-		switch (choose) {
-		case 1: {
-			drawBoard(0,0,WIDTH_CONSOLE,HEIGHT_CONSOLE);
-			NewGame();
-			break;
-		}
-		case 2: {
-			cout << "18120586 - Ho Hoang Thuong" << endl;
-			cout << "18120609 - Ho Khac Minh Tri" << endl;
-			cout << "18120598 - Huynh Gia Toai" << endl;
-			cout << "18120322 - Luu Thien Duc" << endl;
-			cout << "18120316 - Pham Ngoc Diep" << endl;
+		cout << "18120586 - Ho Hoang Thuong" << endl;
+		cout << "18120609 - Ho Khac Minh Tri" << endl;
+		cout << "18120598 - Huynh Gia Toai" << endl;
+		cout << "18120322 - Luu Thien Duc" << endl;
+		cout << "18120316 - Pham Ngoc Diep" << endl;
+		cout << endl;
 
-			cout << endl;
-			system("pause");
-			break;
-		}
-		case 0: {
-			break;
-		}
-		}
-	} while (choose != 0);
+		while (1)
+			if (_kbhit())
+			{
+				int in = _getch();
+				if (in == 13)
+					system("cls");
+				break;
+			}
+		Menu();
+	}
+	if (option1 == 3) {
+		//thoat game
+	}
 }
 
 void OpenGame() {
@@ -99,7 +185,7 @@ void OpenGame() {
 }
 
 void NewGame() {
-	bool isQuit=false;
+	bool isQuit = false;
 	TIMER timer;
 	timer.currentTime = clock();
 	timer.frameRate = double(1) / 15;
@@ -115,10 +201,10 @@ void NewGame() {
 		if (timer.timeStep()) {
 			Input(snake);
 			Update(snake, fruit, gate, vt);
-			if(checkCollision(snake,gate))
-				isQuit=true;
+			if (checkCollision(snake, gate))
+				isQuit = true;
 			Render(snake, fruit);
-			Sleep(100/snake->speed);
+			Sleep(100 / snake->speed);
 		}
 	}
 	deleteSnake(snake);
@@ -143,7 +229,7 @@ int Input(SNAKE* snake) {
 	return 0;
 }
 
-void Update(SNAKE* snake, POS& fruit,POS* gate, int& vt) {
+void Update(SNAKE* snake, POS& fruit, POS* gate, int& vt) {
 	if (snake->length == 1 && snake->prevEat == false) {
 		drawChar(snake->body[0].x, snake->body[0].y, headColor, space);
 	}
@@ -176,18 +262,18 @@ void Update(SNAKE* snake, POS& fruit,POS* gate, int& vt) {
 			snake->prevEat = false;
 			pushTopTail(snake, fruit);
 			//Tạo fruit hoặc tạo cổng
-			if(snake->length%8==0 && snake->length/8==snake->speed){
-				gate = GenerateGate(snake);  
+			if (snake->length % 8 == 0 && snake->length / 8 == snake->speed) {
+				gate = GenerateGate(snake);
 				snake->haveGate = true;
-				fruit.x=0;
-				fruit.y=0;
+				fruit.x = 0;
+				fruit.y = 0;
 				renderGate(gate);
 			}
-			else{
+			else {
 				GenerateFruit(snake, fruit, vt);
 				drawChar(fruit.x, fruit.y, 13, fruit.c);
 			}
-			
+
 		}
 	}
 
@@ -198,7 +284,7 @@ void Update(SNAKE* snake, POS& fruit,POS* gate, int& vt) {
 	if (snake->body[0].x == fruit.x && snake->body[0].y == fruit.y) {
 		snake->prevEat = true;
 	}
-	
+
 }
 
 void Render(SNAKE* snake, POS& fruit) {

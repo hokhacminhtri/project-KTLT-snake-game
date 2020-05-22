@@ -4,6 +4,7 @@
 void drawBoard(int x, int y, int width, int height);
 void OpenGame();
 void Loading();
+void Option(int option1, int option2);
 void Menu();
 void NewGame();
 int Input(SNAKE* snake);
