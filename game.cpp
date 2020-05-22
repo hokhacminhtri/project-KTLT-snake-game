@@ -88,9 +88,27 @@ void Option(int option1, int option2) {
 			GotoXY(70, 10);
 			cout << " ";
 		}
+		if (option2 == 4) {
+			GotoXY(25, 12);
+			cout << " ";
+			GotoXY(50, 12);
+			cout << " ";
+		}
 		GotoXY(25, 11);
 		cout << "[";
 		GotoXY(50, 11);
+		cout << "]";
+	}
+	if (option1 == 4) {
+		if (option2 == 3) {
+			GotoXY(25, 11);
+			cout << " ";
+			GotoXY(50, 11);
+			cout << " ";
+		}
+		GotoXY(25, 12);
+		cout << "[";
+		GotoXY(50, 12);
 		cout << "]";
 	}
 }
@@ -105,6 +123,8 @@ void Menu() {
 	GotoXY(30, 10);
 	cout << "ABOUT (thong tin cac thanh vien nhom)" << endl;
 	GotoXY(30, 11);
+	cout << "LOAD GAME";
+	GotoXY(30, 12);
 	cout << "END GAME" << endl;
 
 	Option(option1, option2);
@@ -168,6 +188,23 @@ void Menu() {
 		Menu();
 	}
 	if (option1 == 3) {
+		system("cls");
+		drawBoard(0, 0, WIDTH_CONSOLE, HEIGHT_CONSOLE);
+		NewGame();
+
+		system("pause");
+		while (1)
+			if (_kbhit())
+			{
+				int in = _getch();
+				if (in == 13)
+					system("cls");
+				break;
+			}
+		Menu();
+		//load game
+	}
+	if (option1 == 4) {
 		//thoat game
 	}
 }
@@ -220,7 +257,16 @@ int Input(SNAKE* snake) {
 			if ((GetAsyncKeyState(continueGame) & 0x8000) != 0 || GetAsyncKeyState(continueGame) & 0x8000) break;
 	}
 	else if ((GetAsyncKeyState(exitGame) & 0x8000) != 0 || GetAsyncKeyState(exitGame) & 0x8000) return 1;
-
+	else if ((GetAsyncKeyState(saveGame) & 0x8000) != 0 || GetAsyncKeyState(saveGame) & 0x8000) {
+		while (true)
+			if (SaveGame(snake)) break;
+		GotoXY(80, 11);
+		system("pause");
+		GotoXY(80, 10);
+		cout << "                                 ";
+		GotoXY(80, 11);
+		cout << "                                 ";
+	}
 	if (snake->dir == up && snake->tmpDir == down) snake->dir = down;
 	if (snake->dir == down && snake->tmpDir == up) snake->dir = up;
 	if (snake->dir == left && snake->tmpDir == right) snake->dir = right;
