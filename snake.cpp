@@ -4,8 +4,9 @@ SNAKE* initSnake() {
 	SNAKE* snake = (SNAKE*)malloc(sizeof(SNAKE));
 	snake->length = 1;
 	snake->body = (POS*)malloc(snake->length * sizeof(POS));
-	snake->body[0].x = 5;
-	snake->body[0].y = 5;
+	srand((unsigned int)time(0));
+	snake->body[0].x = rand() % (WIDTH_CONSOLE) + 1 ;
+	snake->body[0].y = rand() % (HEIGHT_CONSOLE )+ 1;
 	// sua lai head theo random
 	snake->body[0].c = '1';
 	snake->dir = 0;
