@@ -74,6 +74,7 @@ bool IsValid(SNAKE* snake, int x, int y)
 			return false;
 		}
 	}
+	return true;
 }
 
 void GenerateFruit(SNAKE* snake, POS& fruit, int& vt)
@@ -90,4 +91,18 @@ void GenerateFruit(SNAKE* snake, POS& fruit, int& vt)
 	fruit.y = y;
 	fruit.c = char(fruit_name[vt]);
 	vt++;
+}
+void CreateGate(SNAKE* snake,POS& gate)
+{
+	int x, y;
+	srand((unsigned int)time(NULL));
+	do
+	{
+		x = rand() % (WIDTH_CONSOLE - 2) + 1;
+		y = rand() % (HEIGHT_CONSOLE - 2) + 1;
+	} while (IsValid(snake, x, y) == false);
+	gate.x = x;
+	gate.y = y;
+	gate.c = '@';
+	snake->haveGate=true;
 }

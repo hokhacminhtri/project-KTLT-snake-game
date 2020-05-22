@@ -1,5 +1,25 @@
 #include "game.h"
 
+void drawBoard(int x, int y, int width, int height)
+{
+	GotoXY(x, y);
+	cout << 'X';
+	for (int i = 1; i < width; i++)
+		cout << 'X';
+	cout << 'X';
+	GotoXY(x, height + y);
+	cout << 'X';
+	for (int i = 0; i < width; i++)
+		cout << 'X';
+	cout << 'X';
+	for(int i=y+1;i<height+y;i++)
+	{
+		GotoXY(x, i);
+		cout << 'X';
+		GotoXY(x + width, i);
+		cout << 'X';
+	}
+}
 void Loading() {
 	TextColor(12);
 	GotoXY(25, 12);
@@ -44,6 +64,7 @@ void Menu() {
 
 		switch (choose) {
 		case 1: {
+			drawBoard(0,0,WIDTH_CONSOLE,HEIGHT_CONSOLE);
 			NewGame();
 			break;
 		}
@@ -78,6 +99,7 @@ void OpenGame() {
 }
 
 void NewGame() {
+	bool isQuit=false;
 	TIMER timer;
 	timer.currentTime = clock();
 	timer.frameRate = double(1) / 15;
@@ -85,17 +107,21 @@ void NewGame() {
 	SNAKE* snake = initSnake();
 	int vt = 0;
 	POS fruit;// = { 3, 3, '8' };
+	POS gate;
 	GenerateFruit(snake, fruit, vt);
 	renderSnake(snake);
 	drawChar(fruit.x, fruit.y, 13, fruit.c);
-	while (true) {
+	while (!isQuit) {
 		if (timer.timeStep()) {
 			Input(snake);
-			Update(snake, fruit, vt);
+			Update(snake, fruit, gate, vt);
+			if(checkCollision(snake))
+				isQuit=true;
 			Render(snake, fruit);
+			Sleep(100/snake->speed);
 		}
 	}
-
+	deleteSnake(snake);
 }
 
 int Input(SNAKE* snake) {
@@ -117,7 +143,7 @@ int Input(SNAKE* snake) {
 	return 0;
 }
 
-void Update(SNAKE* snake, POS& fruit, int& vt) {
+void Update(SNAKE* snake, POS& fruit,POS& gate, int& vt) {
 	if (snake->length == 1 && snake->prevEat == false) {
 		drawChar(snake->body[0].x, snake->body[0].y, headColor, space);
 	}
@@ -128,16 +154,35 @@ void Update(SNAKE* snake, POS& fruit, int& vt) {
 				snake->body[i].x = snake->body[i - 1].x;
 				snake->body[i].y = snake->body[i - 1].y;
 			}
+
+			if (snake->body[0].x == gate.x && snake->body[0].y == gate.y) {
+				enterGate(snake,gate);
+				if(gate.x==snake->body[snake->length - 1].x&&gate.y==snake->body[snake->length - 1].y){
+					drawChar(gate.x,gate.y,green,space);
+					newLevel(snake);
+					GenerateFruit(snake, fruit, vt);
+					drawChar(fruit.x, fruit.y, 13, fruit.c);
+				}
+			}
 		}
 		else {
 			snake->prevEat = false;
 			pushTopTail(snake, fruit);
-			//Tạo fruit
-			GenerateFruit(snake, fruit, vt);
-			drawChar(fruit.x, fruit.y, 13, fruit.c);
-
+			//Tạo fruit hoặc tạo cổng
+			if(snake->length%8==0 && snake->length/8==snake->speed){
+				CreateGate(snake,gate);
+				fruit.x=0;
+				fruit.y=0;
+				drawChar(gate.x,gate.y,green,gate.c);
+			}
+			else{
+				GenerateFruit(snake, fruit, vt);
+				drawChar(fruit.x, fruit.y, 13, fruit.c);
+			}
+			
 		}
 	}
+
 	if (snake->dir == up) snake->body[0].y--;
 	else if (snake->dir == left) snake->body[0].x--;
 	else if (snake->dir == down) snake->body[0].y++;
@@ -145,6 +190,7 @@ void Update(SNAKE* snake, POS& fruit, int& vt) {
 	if (snake->body[0].x == fruit.x && snake->body[0].y == fruit.y) {
 		snake->prevEat = true;
 	}
+	
 }
 
 void Render(SNAKE* snake, POS& fruit) {

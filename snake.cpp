@@ -5,15 +5,18 @@ SNAKE* initSnake() {
 	snake->length = 1;
 	snake->body = (POS*)malloc(snake->length * sizeof(POS));
 	srand((unsigned int)time(0));
-	snake->body[0].x = rand() % (WIDTH_CONSOLE) + 1 ;
-	snake->body[0].y = rand() % (HEIGHT_CONSOLE )+ 1;
+	snake->body[0].x = rand() % (WIDTH_CONSOLE-1) + 1 ;
+	snake->body[0].y = rand() % (HEIGHT_CONSOLE-1)+ 1;
 	// sua lai head theo random
 	snake->body[0].c = '1';
 	snake->dir = 0;
 	snake->tmpDir = 0;
 	snake->prevEat = false;
+	snake->speed=1;
+	snake->haveGate=false;
 	return snake;
 }
+
 
 void pushTopTail(SNAKE* snake, POS newTail) {
 	POS* newBody = (POS*)realloc(snake->body, (snake->length + 1) * sizeof(POS));
@@ -41,6 +44,46 @@ void deleteSnake(SNAKE* snake) {
 	if (snake != NULL)
 	{
 		delete[]snake->body;
-		delete[]snake;
+		delete snake;
 	}
+}
+
+bool checkCollision(SNAKE* snake){
+	
+	if(snake->body[0].x<=0||snake->body[0].x>=WIDTH_CONSOLE)
+		return true;
+
+	if(snake->body[0].y<=0||snake->body[0].y>=HEIGHT_CONSOLE)
+		return true;
+
+	if(snake->dir==0)
+		return false;	
+
+	for(int i=3;i<snake->length;i++){
+		if(snake->body[0].x==snake->body[i].x&&snake->body[0].y==snake->body[i].y)
+			return true;
+	}
+	return false;
+}
+
+void enterGate(SNAKE* snake,POS gate){
+	
+	int lengthSnake=snake->length-1;
+	snake->body[0].x=gate.x;
+	snake->body[0].y=gate.y;
+	snake->dir=0;
+	
+}
+void newLevel(SNAKE* snake){
+	snake->speed+=1;
+	srand((unsigned int)time(0));
+	snake->body[0].x = rand() % (WIDTH_CONSOLE-5) + 5 ;
+	snake->body[0].y = rand() % (HEIGHT_CONSOLE-5)+ 5;
+	for (int i = 1; i <= snake->length-1; i++) {
+		snake->body[i].x = snake->body[0].x-1;
+		snake->body[i].y = snake->body[0].y;
+	}	
+	snake->dir = 0;
+	snake->tmpDir = 0;
+	snake->haveGate=false;
 }
