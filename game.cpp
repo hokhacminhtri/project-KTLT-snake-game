@@ -1,4 +1,4 @@
-﻿#include "game.h"
+#include "game.h"
 
 void Loading() {
 	TextColor(12);
@@ -43,29 +43,29 @@ void Menu() {
 		system("cls");
 
 		switch (choose) {
-			case 1: {
-				NewGame();
-				break;
-			}
-			case 2: {
-				cout << "18120586 - Ho Hoang Thuong" << endl;
-				cout << "18120609 - Ho Khac Minh Tri" << endl;
-				cout << "18120598 - Huynh Gia Toai" << endl;
-				cout << "18120322 - Luu Thien Duc" << endl;
-				cout << "18120316 - Pham Ngoc Diep" << endl;
-	
-				cout << endl;
-				system("pause");
-				break;
-			}
-			case 0: {
-				break;
-			}
+		case 1: {
+			NewGame();
+			break;
+		}
+		case 2: {
+			cout << "18120586 - Ho Hoang Thuong" << endl;
+			cout << "18120609 - Ho Khac Minh Tri" << endl;
+			cout << "18120598 - Huynh Gia Toai" << endl;
+			cout << "18120322 - Luu Thien Duc" << endl;
+			cout << "18120316 - Pham Ngoc Diep" << endl;
+
+			cout << endl;
+			system("pause");
+			break;
+		}
+		case 0: {
+			break;
+		}
 		}
 	} while (choose != 0);
 }
 
-void OpenGame(){
+void OpenGame() {
 	Loading();
 	Sleep(200);
 	system("cls");
@@ -77,7 +77,7 @@ void OpenGame(){
 	system("pause");
 }
 
-void NewGame(){
+void NewGame() {
 	TIMER timer;
 	timer.currentTime = clock();
 	timer.frameRate = double(1) / 15;
@@ -91,14 +91,14 @@ void NewGame(){
 	while (true) {
 		if (timer.timeStep()) {
 			Input(snake);
-			Update(snake, fruit,vt);
+			Update(snake, fruit, vt);
 			Render(snake, fruit);
 		}
 	}
-	
+
 }
 
-int Input(SNAKE* snake){
+int Input(SNAKE* snake) {
 	if ((GetAsyncKeyState(VK_UP) & 0x8000) != 0 || (GetAsyncKeyState(VK_UP) & 0x8000)) snake->dir = up;
 	else if ((GetAsyncKeyState(VK_LEFT) & 0x8000) != 0 || (GetAsyncKeyState(VK_LEFT) & 0x8000)) snake->dir = left;
 	else if ((GetAsyncKeyState(VK_DOWN) & 0x8000) != 0 || GetAsyncKeyState(VK_DOWN) & 0x8000) snake->dir = down;
@@ -117,7 +117,7 @@ int Input(SNAKE* snake){
 	return 0;
 }
 
-void Update(SNAKE* snake, POS& fruit,int& vt){
+void Update(SNAKE* snake, POS& fruit, int& vt) {
 	if (snake->length == 1 && snake->prevEat == false) {
 		drawChar(snake->body[0].x, snake->body[0].y, headColor, space);
 	}
@@ -133,9 +133,9 @@ void Update(SNAKE* snake, POS& fruit,int& vt){
 			snake->prevEat = false;
 			pushTopTail(snake, fruit);
 			//Tạo fruit
-			GenerateFruit(snake, fruit,vt);
+			GenerateFruit(snake, fruit, vt);
 			drawChar(fruit.x, fruit.y, 13, fruit.c);
-			
+
 		}
 	}
 	if (snake->dir == up) snake->body[0].y--;
@@ -147,37 +147,10 @@ void Update(SNAKE* snake, POS& fruit,int& vt){
 	}
 }
 
-void Render(SNAKE* snake, POS& fruit){
+void Render(SNAKE* snake, POS& fruit) {
 	drawChar(snake->body[0].x, snake->body[0].y, headColor, snake->body[0].c);
 	for (int i = 1; i < snake->length; i++) {
 		drawChar(snake->body[i].x, snake->body[i].y, tailColor, snake->body[i].c);
 	}
 }
 
-bool IsValid(SNAKE* snake, int x, int y)
-{
-	int i;
-	for (i = 0; i < snake->length; i++)
-	{
-		if (snake->body[i].x == x && snake->body[i].y == y)
-		{
-			return false;
-		}
-	}
-}
-
-void GenerateFruit(SNAKE* snake, POS& fruit,int& vt)
-{
-	int x, y;
-	//char fruit_name[39] = { 8,1,2,0,5,8,6,1,8,1,2,0,6,0,9,1,8,1,2,0,5,9,8,1,8,1,2,0,3,2,2,1,8,1,2,0,3,1,6 };
-	srand(time(NULL));
-	do
-	{
-		x = rand() % (WIDTH_CONSOLE - 2) + 1;
-		y = rand() % (HEIGH_CONSOLE - 2) + 1;
-	} while (IsValid(snake, x, y) == false);
-	fruit.x = x;
-	fruit.y = y;
-	fruit.c = char(fruit_name[vt]);
-	vt++;
-}
