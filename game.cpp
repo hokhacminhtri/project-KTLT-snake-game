@@ -107,7 +107,7 @@ void NewGame() {
 	SNAKE* snake = initSnake();
 	int vt = 0;
 	POS fruit;// = { 3, 3, '8' };
-	POS gate;
+	POS* gate = GenerateGate(snake);
 	GenerateFruit(snake, fruit, vt);
 	renderSnake(snake);
 	drawChar(fruit.x, fruit.y, 13, fruit.c);
@@ -115,7 +115,7 @@ void NewGame() {
 		if (timer.timeStep()) {
 			Input(snake);
 			Update(snake, fruit, gate, vt);
-			if(checkCollision(snake))
+			if(checkCollision(snake,gate))
 				isQuit=true;
 			Render(snake, fruit);
 			Sleep(100/snake->speed);
@@ -143,7 +143,7 @@ int Input(SNAKE* snake) {
 	return 0;
 }
 
-void Update(SNAKE* snake, POS& fruit,POS& gate, int& vt) {
+void Update(SNAKE* snake, POS& fruit,POS* gate, int& vt) {
 	if (snake->length == 1 && snake->prevEat == false) {
 		drawChar(snake->body[0].x, snake->body[0].y, headColor, space);
 	}
@@ -154,14 +154,21 @@ void Update(SNAKE* snake, POS& fruit,POS& gate, int& vt) {
 				snake->body[i].x = snake->body[i - 1].x;
 				snake->body[i].y = snake->body[i - 1].y;
 			}
-
-			if (snake->body[0].x == gate.x && snake->body[0].y == gate.y) {
-				enterGate(snake,gate);
-				if(gate.x==snake->body[snake->length - 1].x&&gate.y==snake->body[snake->length - 1].y){
-					drawChar(gate.x,gate.y,green,space);
-					newLevel(snake);
-					GenerateFruit(snake, fruit, vt);
-					drawChar(fruit.x, fruit.y, 13, fruit.c);
+			if (snake->haveGate == true)
+			{
+				if ((snake->body[0].x == gate[1].x && snake->body[0].y == gate[1].y)
+					|| (snake->body[0].x == gate[2].x && snake->body[0].y == gate[2].y))
+				{
+					enterGate(snake, gate);
+					if ((gate[1].x == snake->body[snake->length - 1].x && gate[1].y == snake->body[snake->length - 1].y)
+						|| gate[2].x == snake->body[snake->length - 1].x && gate[2].y == snake->body[snake->length - 1].y
+						) {
+						//	drawChar(gate[1].x,gate[1].y,green,space);
+						renderGate(gate, space);
+						newLevel(snake);
+						GenerateFruit(snake, fruit, vt);
+						drawChar(fruit.x, fruit.y, 13, fruit.c);
+					}
 				}
 			}
 		}
@@ -170,10 +177,11 @@ void Update(SNAKE* snake, POS& fruit,POS& gate, int& vt) {
 			pushTopTail(snake, fruit);
 			//Tạo fruit hoặc tạo cổng
 			if(snake->length%8==0 && snake->length/8==snake->speed){
-				CreateGate(snake,gate);
+				gate = GenerateGate(snake);  
+				snake->haveGate = true;
 				fruit.x=0;
 				fruit.y=0;
-				drawChar(gate.x,gate.y,green,gate.c);
+				renderGate(gate);
 			}
 			else{
 				GenerateFruit(snake, fruit, vt);

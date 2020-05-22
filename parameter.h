@@ -28,9 +28,9 @@ void TextColor(int color);
 #define green          10
 #define WIDTH_CONSOLE  70
 #define HEIGHT_CONSOLE 20
+#define GATE_SIZE 4
 const char fruit_name[] = "812058618120609181205981812032218120316";
 void drawChar(int x, int y, int color, int character);
 void drawStr(int x, int y, int color, string longString);
 bool IsValid(SNAKE* snake, int x, int y);
 void GenerateFruit(SNAKE* snake, POS& fruit, int& vt);
-void CreateGate(SNAKE* snake,POS& gate);

@@ -20,7 +20,10 @@ SNAKE* initSnake();
 void pushTopTail(SNAKE* snake, POS newTail);
 void renderSnake(SNAKE* snake);
 void deleteSnake(SNAKE* snake);
-bool checkCollision(SNAKE* snake);//Kiem tra va cham
-void enterGate(SNAKE* snake,POS gate);
+bool checkCollision(SNAKE* snake,POS* gate);//Kiem tra va cham
+void enterGate(SNAKE* snake,POS* gate);
 void newLevel(SNAKE* snake);
+void renderGate(POS* gate);
+void renderGate(POS* gate, char c);
+POS* GenerateGate(SNAKE* snake);
 
