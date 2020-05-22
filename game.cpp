@@ -83,8 +83,9 @@ void NewGame(){
 	timer.frameRate = double(1) / 15;
 	timer.deltaTime = 0;
 	SNAKE* snake = initSnake();
-	POS fruit = {3, 3, '8'};
 	int vt = 0;
+	POS fruit;// = { 3, 3, '8' };
+	GenerateFruit(snake, fruit, vt);
 	renderSnake(snake);
 	drawChar(fruit.x, fruit.y, 13, fruit.c);
 	while (true) {

@@ -31,7 +31,7 @@ void TextColor(int color);
 #define green          10
 #define WIDTH_CONSOLE  10
 #define HEIGH_CONSOLE 10
-const char fruit_name[] =  "12058618120609181205981812032218120316";
+const char fruit_name[] =  "812058618120609181205981812032218120316";
 void drawChar(int x, int y, int color, int character);
 void drawStr(int x, int y, int color, string longString);
 
