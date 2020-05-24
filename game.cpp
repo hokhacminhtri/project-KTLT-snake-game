@@ -55,7 +55,7 @@ void Option(int option1, int option2) {
 		if (option2 == 2) {
 			GotoXY(25, 22);
 			cout << " ";
-			GotoXY(70, 10);
+			GotoXY(70, 22);
 			cout << " ";
 		}
 		GotoXY(25, 20);
