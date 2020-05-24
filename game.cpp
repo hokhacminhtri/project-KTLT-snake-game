@@ -53,62 +53,62 @@ void Loading() {
 void Option(int option1, int option2) {
 	if (option1 == 1) {
 		if (option2 == 2) {
-			GotoXY(25, 10);
+			GotoXY(25, 22);
 			cout << " ";
 			GotoXY(70, 10);
 			cout << " ";
 		}
-		GotoXY(25, 9);
+		GotoXY(25, 20);
 		cout << "[";
-		GotoXY(50, 9);
+		GotoXY(50, 20);
 		cout << "]";
 	}
 	if (option1 == 2) {
 		if (option2 == 1) {
-			GotoXY(25, 9);
+			GotoXY(25, 20);
 			cout << " ";
-			GotoXY(50, 9);
+			GotoXY(50, 20);
 			cout << " ";
 		}
 		if (option2 == 3) {
-			GotoXY(25, 11);
+			GotoXY(25, 24);
 			cout << " ";
-			GotoXY(50, 11);
+			GotoXY(50, 24);
 			cout << " ";
 		}
-		GotoXY(25, 10);
+		GotoXY(25, 22);
 		cout << "[";
-		GotoXY(70, 10);
+		GotoXY(70, 22);
 		cout << "]";
 	}
 	if (option1 == 3) {
 		if (option2 == 2) {
-			GotoXY(25, 10);
+			GotoXY(25, 22);
 			cout << " ";
-			GotoXY(70, 10);
+			GotoXY(70, 22);
 			cout << " ";
 		}
 		if (option2 == 4) {
-			GotoXY(25, 12);
+			GotoXY(25, 26);
 			cout << " ";
-			GotoXY(50, 12);
+			GotoXY(50, 26);
 			cout << " ";
 		}
-		GotoXY(25, 11);
+		GotoXY(25, 24);
 		cout << "[";
-		GotoXY(50, 11);
+		GotoXY(50, 24);
 		cout << "]";
 	}
 	if (option1 == 4) {
 		if (option2 == 3) {
-			GotoXY(25, 11);
+			GotoXY(25, 24);
 			cout << " ";
-			GotoXY(50, 11);
+			GotoXY(50, 24);
 			cout << " ";
 		}
-		GotoXY(25, 12);
+		GotoXY(25, 26);
 		cout << "[";
-		GotoXY(50, 12);
+		GotoXY(50, 26);
 		cout << "]";
 	}
 }
@@ -118,13 +118,33 @@ void Menu() {
 	int option2 = 0;
 
 	system("cls");
-	GotoXY(30, 9);
+
+	TextColor(12);
+	GotoXY(15, 4);
+	cout << " __    _    _   _     ___     __  __        ______";
+	TextColor(12);
+	GotoXY(15, 5);
+	cout << "|  \\  | |  | |_| |   /   \\   |  \\/  |      / ___  \\";
+	TextColor(13);
+	GotoXY(15, 6);
+	cout << "|   \\ | |  |  _  |  /     \\  | |\\/| |      |_| /  /";
+	TextColor(14);
+	GotoXY(15, 7);
+	cout << "| |\\ \\| |  | | | |  \\     /  | |  | |         /  /____";
+	TextColor(10);
+	GotoXY(15, 8);
+	cout << "|_| \\ __|  |_| |_|   \\___/   |_|  |_|        /_______/";
+
+
+
+	TextColor(13);
+	GotoXY(30, 20);	
 	cout << "PLAY GAME" << endl;
-	GotoXY(30, 10);
+	GotoXY(30, 22);
 	cout << "ABOUT (thong tin cac thanh vien nhom)" << endl;
-	GotoXY(30, 11);
+	GotoXY(30, 24);
 	cout << "LOAD GAME";
-	GotoXY(30, 12);
+	GotoXY(30, 26);
 	cout << "END GAME" << endl;
 
 	Option(option1, option2);
@@ -153,6 +173,8 @@ void Menu() {
 
 	if (option1 == 1) {
 		system("cls");
+		TextColor(10);
+
 		drawBoard(0, 0, WIDTH_CONSOLE, HEIGHT_CONSOLE);
 		NewGame();
 
@@ -169,6 +191,7 @@ void Menu() {
 	}
 	if (option1 == 2) {
 		system("cls");
+		TextColor(14);
 
 		cout << "18120586 - Ho Hoang Thuong" << endl;
 		cout << "18120609 - Ho Khac Minh Tri" << endl;
@@ -189,6 +212,8 @@ void Menu() {
 	}
 	if (option1 == 3) {
 		system("cls");
+		TextColor(10);
+
 		drawBoard(0, 0, WIDTH_CONSOLE, HEIGHT_CONSOLE);
 		NewGame();
 
