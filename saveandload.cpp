@@ -18,3 +18,46 @@ int SaveGame(SNAKE* snake)
 	outputStream.close();
 	return 1;
 }
+
+SNAKE* LoadGame(string saveFile)
+{
+	ifstream inputStream(saveFile);
+	string length, speed, dir, tmpDir, haveGate, prevEat;
+	string x, y, c;
+	string readingLine;
+	SNAKE* snake = (SNAKE*)malloc(sizeof(SNAKE));
+	getline(inputStream, readingLine);
+	stringstream ss(readingLine);
+
+	getline(ss, length, '-');
+	snake->length = stoi(length);
+	getline(ss, speed, '-');
+	snake->speed = stoi(speed);
+	getline(ss, dir, '-');
+	snake->dir = stoi(dir);
+	getline(ss, tmpDir, '-');
+	snake->tmpDir = stoi(tmpDir);
+	getline(ss, haveGate, '-');
+	if (stoi(haveGate)) snake->haveGate = true;
+	else snake->haveGate = false;
+	getline(ss, prevEat, '-');
+	if (stoi(prevEat)) snake->prevEat = true;
+	else snake->prevEat = false;
+
+	// cout << length << "-" << speed << "-" << dir << "-" << tmpDir << "-" << haveGate << "-" << prevEat << endl;
+	snake->body = (POS*)malloc(snake->length * sizeof(POS));
+	int i = 0;
+	while (getline(inputStream, readingLine))
+	{
+		stringstream ss(readingLine);
+		getline(ss, x, '-');
+		getline(ss, y, '-');
+		getline(ss, c, '-');
+		snake->body[i].x = stoi(x);
+		snake->body[i].y = stoi(y);
+		snake->body[i].c = c[0];
+		i++;
+	}
+	inputStream.close();
+	return snake;
+}

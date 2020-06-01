@@ -213,11 +213,19 @@ void Menu() {
 	if (option1 == 3) {
 		system("cls");
 		TextColor(10);
+		GotoXY(50, 10);
+		string saveFile;
+		cout << "Nhap ten file load: "; cin >> saveFile;
+		SNAKE* snake = LoadGame(saveFile);
+		//system("cls");
+		//TextColor(10);
+		//drawBoard(0, 0, WIDTH_CONSOLE, HEIGHT_CONSOLE);
+		//NewGame(snake);
 
-		drawBoard(0, 0, WIDTH_CONSOLE, HEIGHT_CONSOLE);
-		NewGame();
+
 
 		system("pause");
+
 		while (1)
 			if (_kbhit())
 			{
@@ -263,6 +271,32 @@ void NewGame() {
 		if (timer.timeStep()) {
 			Input(snake);
 			Update(snake, fruit, gate, vt);
+			if (checkCollision(snake, gate))
+				isQuit = true;
+			Render(snake, fruit);
+			Sleep(100 / snake->speed);
+		}
+	}
+	deleteSnake(snake);
+}
+
+void NewGame(SNAKE* snake) { // Test
+	bool isQuit = false;
+	TIMER timer;
+	timer.currentTime = clock();
+	timer.frameRate = double(1) / 15;
+	timer.deltaTime = 0;
+	int vt = 0;
+	POS fruit;// = { 3, 3, '8' };
+	POS* gate = GenerateGate(snake);
+	GenerateFruit(snake, fruit, vt);
+	renderSnake(snake);
+	drawChar(fruit.x, fruit.y, 13, fruit.c);
+	while (!isQuit) {
+		if (timer.timeStep()) {
+			Input(snake);
+			Update(snake, fruit, gate, vt);
+			
 			if (checkCollision(snake, gate))
 				isQuit = true;
 			Render(snake, fruit);
