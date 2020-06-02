@@ -14,6 +14,7 @@ struct SNAKE {
 	bool prevEat;
 	int speed;
 	bool haveGate;
+	int vt;
 };
 
 SNAKE* initSnake();

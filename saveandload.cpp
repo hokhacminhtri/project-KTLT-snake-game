@@ -12,7 +12,7 @@ int SaveGame(SNAKE* snake)
 	cin >> saveFile;
 	ofstream outputStream(saveFile, ios::trunc);
 	unsigned int i;
-	outputStream << snake->length << "-" << snake->speed << "-" << snake->dir << "-" << snake->tmpDir << "-" << snake->haveGate << "-" << snake->prevEat << endl;
+	outputStream << snake->length << "-" << snake->speed << "-" << snake->dir << "-" << snake->tmpDir << "-" << snake->haveGate << "-" << snake->prevEat << "-" << snake->vt << endl;
 	for (i = 0; i < snake->length; i++)
 		outputStream << snake->body[i].x << "-" << snake->body[i].y << "-" << snake->body[i].c << endl;
 	outputStream.close();
@@ -22,7 +22,7 @@ int SaveGame(SNAKE* snake)
 SNAKE* LoadGame(string saveFile)
 {
 	ifstream inputStream(saveFile);
-	string length, speed, dir, tmpDir, haveGate, prevEat;
+	string length, speed, dir, tmpDir, haveGate, prevEat, vt;
 	string x, y, c;
 	string readingLine;
 	SNAKE* snake = (SNAKE*)malloc(sizeof(SNAKE));
@@ -43,6 +43,9 @@ SNAKE* LoadGame(string saveFile)
 	getline(ss, prevEat, '-');
 	if (stoi(prevEat)) snake->prevEat = true;
 	else snake->prevEat = false;
+	getline(ss, vt, '-');
+	snake->vt = stoi(vt);
+	snake->vt--;
 
 	// cout << length << "-" << speed << "-" << dir << "-" << tmpDir << "-" << haveGate << "-" << prevEat << endl;
 	snake->body = (POS*)malloc(snake->length * sizeof(POS));

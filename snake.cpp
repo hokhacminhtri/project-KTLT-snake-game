@@ -14,6 +14,7 @@ SNAKE* initSnake() {
 	snake->prevEat = false;
 	snake->speed=1;
 	snake->haveGate=false;
+	snake->vt = 0;
 	return snake;
 }
 
