@@ -3,6 +3,6 @@
 
 using namespace std;
 
-int SaveGame(SNAKE* snake);
+int SaveGame(GAMEOBJECT* gameObject);
 
-SNAKE* LoadGame(string saveFile);
+GAMEOBJECT* LoadGame(string saveFile);

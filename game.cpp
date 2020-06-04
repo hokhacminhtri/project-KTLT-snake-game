@@ -1,6 +1,6 @@
 #include "game.h"
 
-void drawBoard(int x, int y, int width, int height)
+void DrawBoard(int x, int y, int width, int height)
 {
 	GotoXY(x, y);
 	cout << 'X';
@@ -175,7 +175,7 @@ void Menu() {
 		system("cls");
 		TextColor(10);
 
-		drawBoard(0, 0, WIDTH_CONSOLE, HEIGHT_CONSOLE);
+		DrawBoard(0, 0, WIDTH_CONSOLE, HEIGHT_CONSOLE);
 		NewGame();
 
 		system("pause");
@@ -216,13 +216,11 @@ void Menu() {
 		GotoXY(50, 10);
 		string saveFile;
 		cout << "Nhap ten file load: "; cin >> saveFile;
-		SNAKE* snake = LoadGame(saveFile);
+		GAMEOBJECT* gameObject = LoadGame(saveFile);
 		system("cls");
 		TextColor(10);
-		drawBoard(0, 0, WIDTH_CONSOLE, HEIGHT_CONSOLE);
-		NewGame(snake);
-
-
+		DrawBoard(0, 0, WIDTH_CONSOLE, HEIGHT_CONSOLE);
+		NewGame(gameObject);
 
 		system("pause");
 
@@ -260,54 +258,64 @@ void NewGame() {
 	timer.currentTime = clock();
 	timer.frameRate = double(1) / 15;
 	timer.deltaTime = 0;
-	SNAKE* snake = initSnake();
-	POS fruit;// = { 3, 3, '8' };
-	POS* gate = GenerateGate(snake);
-	GenerateFruit(snake, fruit, snake->vt);
-	renderSnake(snake);
-	drawChar(fruit.x, fruit.y, 13, fruit.c);
-	while (!isQuit) {
-		if (timer.timeStep()) {
-			Input(snake);
-			Update(snake, fruit, gate, snake->vt);
-			if (checkCollision(snake, gate))
-				isQuit = true;
-			Render(snake, fruit);
-			Sleep(100 / snake->speed);
+	GAMEOBJECT* gameObject = initGameObject();
+	if (gameObject != NULL && gameObject->snake != NULL) {
+		SNAKE* snake = gameObject->snake;
+		POS* fruit = gameObject->fruit;
+		POS* gate = gameObject->gate;
+		if (snake != NULL && fruit != NULL && gate != NULL) {
+			renderSnake(gameObject->snake);
+			renderFruit(gameObject->fruit);
+			_getch();
+			while (!isQuit) {
+				if (timer.timeStep()) {
+					Input(gameObject);
+					Update(gameObject);
+					if (checkCollision(gameObject->snake, gameObject->gate))
+						isQuit = true;
+					Render(gameObject);
+					Sleep(100 / gameObject->snake->speed);
+				}
+			}
 		}
 	}
-	deleteSnake(snake);
+	deleteGameObject(gameObject);
 }
 
-void NewGame(SNAKE* snake) { // Test
+void NewGame(GAMEOBJECT* gameObject) { // Test
 	bool isQuit = false;
 	TIMER timer;
 	timer.currentTime = clock();
 	timer.frameRate = double(1) / 15;
 	timer.deltaTime = 0;
-	POS fruit;// = { 3, 3, '8' };
-	POS* gate = GenerateGate(snake);
-	GenerateFruit(snake, fruit, snake->vt);
-	renderSnake(snake);
-	drawChar(fruit.x, fruit.y, 13, fruit.c);
-	while (!isQuit) {
-		if (timer.timeStep()) {
-			Input(snake);
-			Update(snake, fruit, gate, snake->vt);
-			if (checkCollision(snake, gate))
-				isQuit = true;
-			Render(snake, fruit);
-			Sleep(100 / snake->speed);
+	if (gameObject != NULL && gameObject->snake != NULL) {
+		SNAKE* snake = gameObject->snake;
+		POS* fruit = gameObject->fruit;
+		POS* gate = gameObject->gate;
+		if (snake != NULL && fruit != NULL && gate != NULL) {
+			renderSnake(gameObject->snake);
+			renderFruit(gameObject->fruit);
+			_getch();
+			while (!isQuit) {
+				if (timer.timeStep()) {
+					Input(gameObject);
+					Update(gameObject);
+					if (checkCollision(gameObject->snake, gameObject->gate))
+						isQuit = true;
+					Render(gameObject);
+					Sleep(100 / gameObject->snake->speed);
+				}
+			}
 		}
 	}
-	deleteSnake(snake);
+	deleteGameObject(gameObject);
 }
 
-int Input(SNAKE* snake) {
-	if ((GetAsyncKeyState(VK_UP) & 0x8000) != 0 || (GetAsyncKeyState(VK_UP) & 0x8000)) snake->dir = up;
-	else if ((GetAsyncKeyState(VK_LEFT) & 0x8000) != 0 || (GetAsyncKeyState(VK_LEFT) & 0x8000)) snake->dir = left;
-	else if ((GetAsyncKeyState(VK_DOWN) & 0x8000) != 0 || GetAsyncKeyState(VK_DOWN) & 0x8000) snake->dir = down;
-	else if ((GetAsyncKeyState(VK_RIGHT) & 0x8000) != 0 || GetAsyncKeyState(VK_LEFT) & 0x8000) snake->dir = right;
+int Input(GAMEOBJECT* gameObject) {
+	if ((GetAsyncKeyState(VK_UP) & 0x8000) != 0 || (GetAsyncKeyState(VK_UP) & 0x8000)) gameObject->snake->dir = up;
+	else if ((GetAsyncKeyState(VK_LEFT) & 0x8000) != 0 || (GetAsyncKeyState(VK_LEFT) & 0x8000)) gameObject->snake->dir = left;
+	else if ((GetAsyncKeyState(VK_DOWN) & 0x8000) != 0 || GetAsyncKeyState(VK_DOWN) & 0x8000) gameObject->snake->dir = down;
+	else if ((GetAsyncKeyState(VK_RIGHT) & 0x8000) != 0 || GetAsyncKeyState(VK_LEFT) & 0x8000) gameObject->snake->dir = right;
 	else if ((GetAsyncKeyState(pauseGame) & 0x8000) != 0 || GetAsyncKeyState(pauseGame) & 0x8000) {
 		while (true)
 			if ((GetAsyncKeyState(continueGame) & 0x8000) != 0 || GetAsyncKeyState(continueGame) & 0x8000) break;
@@ -315,7 +323,7 @@ int Input(SNAKE* snake) {
 	else if ((GetAsyncKeyState(exitGame) & 0x8000) != 0 || GetAsyncKeyState(exitGame) & 0x8000) return 1;
 	else if ((GetAsyncKeyState(saveGame) & 0x8000) != 0 || GetAsyncKeyState(saveGame) & 0x8000) {
 		while (true)
-			if (SaveGame(snake)) break;
+			if (SaveGame(gameObject)) break;
 		GotoXY(80, 11);
 		system("pause");
 		GotoXY(80, 10);
@@ -323,21 +331,24 @@ int Input(SNAKE* snake) {
 		GotoXY(80, 11);
 		cout << "                                 ";
 	}
-	if (snake->dir == up && snake->tmpDir == down) snake->dir = down;
-	if (snake->dir == down && snake->tmpDir == up) snake->dir = up;
-	if (snake->dir == left && snake->tmpDir == right) snake->dir = right;
-	if (snake->dir == right && snake->tmpDir == left) snake->dir = left;
-	snake->tmpDir = snake->dir;
+	if (gameObject->snake->dir == up && gameObject->snake->tmpDir == down) gameObject->snake->dir = down;
+	if (gameObject->snake->dir == down && gameObject->snake->tmpDir == up) gameObject->snake->dir = up;
+	if (gameObject->snake->dir == left && gameObject->snake->tmpDir == right) gameObject->snake->dir = right;
+	if (gameObject->snake->dir == right && gameObject->snake->tmpDir == left) gameObject->snake->dir = left;
+	gameObject->snake->tmpDir = gameObject->snake->dir;
 	return 0;
 }
 
-void Update(SNAKE* snake, POS& fruit, POS* gate, int& vt) {
+void Update(GAMEOBJECT* gameObject) {
+	SNAKE* snake = gameObject->snake;
+	POS* fruit = gameObject->fruit;
+	POS* gate = gameObject->gate;
 	if (snake->length == 1 && snake->prevEat == false) {
 		drawChar(snake->body[0].x, snake->body[0].y, headColor, space);
 	}
 	else {
 		if (snake->prevEat == false) {
-			drawChar(snake->body[snake->length - 1].x, snake->body[snake->length - 1].y, green, space);
+			drawChar(snake->body[snake->length - 1].x, snake->body[snake->length - 1].y, tailColor, space);
 			for (int i = snake->length - 1; i >= 1; i--) {
 				snake->body[i].x = snake->body[i - 1].x;
 				snake->body[i].y = snake->body[i - 1].y;
@@ -354,8 +365,8 @@ void Update(SNAKE* snake, POS& fruit, POS* gate, int& vt) {
 						//	drawChar(gate[1].x,gate[1].y,green,space);
 						renderGate(gate, space);
 						newLevel(snake);
-						GenerateFruit(snake, fruit, vt);
-						drawChar(fruit.x, fruit.y, 13, fruit.c);
+						generateFruit(snake, fruit);
+						renderFruit(fruit);
 					}
 				}
 			}
@@ -365,15 +376,15 @@ void Update(SNAKE* snake, POS& fruit, POS* gate, int& vt) {
 			pushTopTail(snake, fruit);
 			//Tạo fruit hoặc tạo cổng
 			if (snake->length % 8 == 0 && snake->length / 8 == snake->speed) {
-				gate = GenerateGate(snake);
+				gate = generateGate(snake);
 				snake->haveGate = true;
-				fruit.x = 0;
-				fruit.y = 0;
+				fruit->x = 0;
+				fruit->y = 0;
 				renderGate(gate);
 			}
 			else {
-				GenerateFruit(snake, fruit, vt);
-				drawChar(fruit.x, fruit.y, 13, fruit.c);
+				generateFruit(gameObject->snake, gameObject->fruit);
+				renderFruit(fruit);
 			}
 
 		}
@@ -383,16 +394,13 @@ void Update(SNAKE* snake, POS& fruit, POS* gate, int& vt) {
 	else if (snake->dir == left) snake->body[0].x--;
 	else if (snake->dir == down) snake->body[0].y++;
 	else if (snake->dir == right) snake->body[0].x++;
-	if (snake->body[0].x == fruit.x && snake->body[0].y == fruit.y) {
+	if (snake->body[0].x == fruit->x && snake->body[0].y == fruit->y) {
 		snake->prevEat = true;
 	}
-
 }
 
-void Render(SNAKE* snake, POS& fruit) {
-	drawChar(snake->body[0].x, snake->body[0].y, headColor, snake->body[0].c);
-	for (int i = 1; i < snake->length; i++) {
-		drawChar(snake->body[i].x, snake->body[i].y, tailColor, snake->body[i].c);
-	}
+void Render(GAMEOBJECT* gameObject) {
+	SNAKE* snake = gameObject->snake;
+	renderSnake(snake);
 }
 

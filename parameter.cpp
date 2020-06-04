@@ -64,31 +64,13 @@ void drawStr(int x, int y, int color, string longString) {
 	// Remove cursor 
 }
 
-bool IsValid(SNAKE* snake, int x, int y)
-{
+bool IsValid(SNAKE* snake, int x, int y){
 	int i;
-	for (i = 0; i < snake->length; i++)
-	{
-		if (snake->body[i].x == x && snake->body[i].y == y)
-		{
+	for (i = 0; i < snake->length; i++){
+		if (snake->body[i].x == x && snake->body[i].y == y){
 			return false;
 		}
 	}
 	return true;
 }
 
-void GenerateFruit(SNAKE* snake, POS& fruit, int& vt)
-{
-	int x, y;
-	//char fruit_name[39] = { 8,1,2,0,5,8,6,1,8,1,2,0,6,0,9,1,8,1,2,0,5,9,8,1,8,1,2,0,3,2,2,1,8,1,2,0,3,1,6 };
-	srand((unsigned int)time(NULL));
-	do
-	{
-		x = rand() % (WIDTH_CONSOLE - 2) + 1;
-		y = rand() % (HEIGHT_CONSOLE - 2) + 1;
-	} while (IsValid(snake, x, y) == false);
-	fruit.x = x;
-	fruit.y = y;
-	fruit.c = char(fruit_name[vt]);
-	vt++;
-}
