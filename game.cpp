@@ -294,7 +294,8 @@ void NewGame(GAMEOBJECT* gameObject) { // Test
 		POS* gate = gameObject->gate;
 		if (snake != NULL && fruit != NULL && gate != NULL) {
 			renderSnake(gameObject->snake);
-			renderFruit(gameObject->fruit);
+			if(snake->haveGate==true) renderGate(gate);
+			else renderFruit(gameObject->fruit);
 			_getch();
 			while (!isQuit) {
 				if (timer.timeStep()) {
@@ -330,6 +331,30 @@ int Input(GAMEOBJECT* gameObject) {
 		cout << "                                 ";
 		GotoXY(80, 11);
 		cout << "                                 ";
+
+	}
+	else if ((GetAsyncKeyState(loadGame) & 0x8000) != 0 || GetAsyncKeyState(loadGame) & 0x8000)
+	{
+		GotoXY(80, 10);
+		string saveFile;
+		cout << "Nhap ten file load: "; cin >> saveFile;
+		GAMEOBJECT* gameObject = LoadGame(saveFile);
+		system("cls");
+		TextColor(10);
+		DrawBoard(0, 0, WIDTH_CONSOLE, HEIGHT_CONSOLE);
+		NewGame(gameObject);
+		system("pause");
+
+		while (1)
+			if (_kbhit())
+			{
+				int in = _getch();
+				if (in == 13)
+					system("cls");
+				break;
+			}
+		Menu();
+		//load game
 	}
 	if (gameObject->snake->dir == up && gameObject->snake->tmpDir == down) gameObject->snake->dir = down;
 	if (gameObject->snake->dir == down && gameObject->snake->tmpDir == up) gameObject->snake->dir = up;
