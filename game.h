@@ -8,6 +8,6 @@ void Option(int option1, int option2);
 void Menu();
 void NewGame();
 void NewGame(GAMEOBJECT* gameObject);
-int Input(GAMEOBJECT* gameObject);
+bool Input(GAMEOBJECT* gameObject);
 void Update(GAMEOBJECT* gameObject);
 void Render(GAMEOBJECT* gameObject);

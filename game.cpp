@@ -178,15 +178,7 @@ void Menu() {
 		DrawBoard(0, 0, WIDTH_CONSOLE, HEIGHT_CONSOLE);
 		NewGame();
 
-		system("pause");
-		while (1)
-			if (_kbhit())
-			{
-				int in = _getch();
-				if (in == 13)
-					system("cls");
-				break;
-			}
+		
 		Menu();
 	}
 	if (option1 == 2) {
@@ -221,17 +213,6 @@ void Menu() {
 		TextColor(10);
 		DrawBoard(0, 0, WIDTH_CONSOLE, HEIGHT_CONSOLE);
 		NewGame(gameObject);
-
-		system("pause");
-
-		while (1)
-			if (_kbhit())
-			{
-				int in = _getch();
-				if (in == 13)
-					system("cls");
-				break;
-			}
 		Menu();
 		//load game
 	}
@@ -269,7 +250,7 @@ void NewGame() {
 			_getch();
 			while (!isQuit) {
 				if (timer.timeStep()) {
-					Input(gameObject);
+					if (Input(gameObject) == true) break;
 					Update(gameObject);
 					if (checkCollision(gameObject->snake, gameObject->gate))
 						isQuit = true;
@@ -299,7 +280,7 @@ void NewGame(GAMEOBJECT* gameObject) { // Test
 			_getch();
 			while (!isQuit) {
 				if (timer.timeStep()) {
-					Input(gameObject);
+					if (Input(gameObject) == true) break;
 					Update(gameObject);
 					if (checkCollision(gameObject->snake, gameObject->gate))
 						isQuit = true;
@@ -312,55 +293,52 @@ void NewGame(GAMEOBJECT* gameObject) { // Test
 	deleteGameObject(gameObject);
 }
 
-int Input(GAMEOBJECT* gameObject) {
+bool Input(GAMEOBJECT* gameObject) {
+	int n;
 	if ((GetAsyncKeyState(VK_UP) & 0x8000) != 0 || (GetAsyncKeyState(VK_UP) & 0x8000)) gameObject->snake->dir = up;
 	else if ((GetAsyncKeyState(VK_LEFT) & 0x8000) != 0 || (GetAsyncKeyState(VK_LEFT) & 0x8000)) gameObject->snake->dir = left;
 	else if ((GetAsyncKeyState(VK_DOWN) & 0x8000) != 0 || GetAsyncKeyState(VK_DOWN) & 0x8000) gameObject->snake->dir = down;
 	else if ((GetAsyncKeyState(VK_RIGHT) & 0x8000) != 0 || GetAsyncKeyState(VK_LEFT) & 0x8000) gameObject->snake->dir = right;
-	else if ((GetAsyncKeyState(pauseGame) & 0x8000) != 0 || GetAsyncKeyState(pauseGame) & 0x8000) {
-		while (true)
-			if ((GetAsyncKeyState(continueGame) & 0x8000) != 0 || GetAsyncKeyState(continueGame) & 0x8000) break;
-	}
-	else if ((GetAsyncKeyState(exitGame) & 0x8000) != 0 || GetAsyncKeyState(exitGame) & 0x8000) return 1;
-	else if ((GetAsyncKeyState(saveGame) & 0x8000) != 0 || GetAsyncKeyState(saveGame) & 0x8000) {
-		while (true)
-			if (SaveGame(gameObject)) break;
-		GotoXY(80, 11);
-		system("pause");
-		GotoXY(80, 10);
-		cout << "                                 ";
-		GotoXY(80, 11);
-		cout << "                                 ";
+	
+	if (_kbhit()) {
+		int n = _getch();
+		if (n == int('t')) {
+			GotoXY(80, 10);
+			string saveFile;
+			cout << "Nhap ten file load: ";
+			cin >> saveFile;
+			GAMEOBJECT* gameObject = LoadGame(saveFile);
+			system("cls");
+			TextColor(10);
+			DrawBoard(0, 0, WIDTH_CONSOLE, HEIGHT_CONSOLE);
+			NewGame(gameObject);
 
-	}
-	else if ((GetAsyncKeyState(loadGame) & 0x8000) != 0 || GetAsyncKeyState(loadGame) & 0x8000)
-	{
-		GotoXY(80, 10);
-		string saveFile;
-		cout << "Nhap ten file load: "; cin >> saveFile;
-		GAMEOBJECT* gameObject = LoadGame(saveFile);
-		system("cls");
-		TextColor(10);
-		DrawBoard(0, 0, WIDTH_CONSOLE, HEIGHT_CONSOLE);
-		NewGame(gameObject);
-		system("pause");
-
-		while (1)
-			if (_kbhit())
-			{
-				int in = _getch();
-				if (in == 13)
-					system("cls");
-				break;
-			}
-		Menu();
-		//load game
+			Menu();
+		}
+		else if (n == int('p')) {
+			while (true)
+				if ((GetAsyncKeyState(continueGame) & 0x8000) != 0 || GetAsyncKeyState(continueGame) & 0x8000) break;
+		}
+		else if (n == (int)'x') {
+				return true;
+		}
+		else if (n == (int)'l') {
+				while (true)
+					if (SaveGame(gameObject)) break;
+				GotoXY(80, 11);
+				system("pause");
+				GotoXY(80, 10);
+				cout << "                                 ";
+				GotoXY(80, 11);
+				cout << "                                 ";
+		}
 	}
 	if (gameObject->snake->dir == up && gameObject->snake->tmpDir == down) gameObject->snake->dir = down;
 	if (gameObject->snake->dir == down && gameObject->snake->tmpDir == up) gameObject->snake->dir = up;
 	if (gameObject->snake->dir == left && gameObject->snake->tmpDir == right) gameObject->snake->dir = right;
 	if (gameObject->snake->dir == right && gameObject->snake->tmpDir == left) gameObject->snake->dir = left;
 	gameObject->snake->tmpDir = gameObject->snake->dir;
+	
 	return 0;
 }
 

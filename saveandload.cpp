@@ -3,8 +3,7 @@
 int SaveGame(GAMEOBJECT* gameObject)
 {
 	string saveFile;
-	GotoXY(80, 10);
-	system("pause");
+
 	GotoXY(80, 10);
 	cout << "                               ";
 	GotoXY(80, 10);

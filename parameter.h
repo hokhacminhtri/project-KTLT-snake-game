@@ -21,10 +21,6 @@ void TextColor(int color);
 #define headColor 11
 #define tailColor 10
 #define fruitColor 13
-#define pauseGame    0x50 // P
-#define exitGame     0x58 // X
-#define saveGame	 0x4C // L
-#define loadGame	 0x54 // T
 #define continueGame 0x43 // C
 #define up 105
 #define down 107
