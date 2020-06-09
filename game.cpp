@@ -178,7 +178,7 @@ void Menu() {
 		DrawBoard(0, 0, WIDTH_CONSOLE, HEIGHT_CONSOLE);
 		NewGame();
 
-		
+
 		Menu();
 	}
 	if (option1 == 2) {
@@ -252,8 +252,12 @@ void NewGame() {
 				if (timer.timeStep()) {
 					if (Input(gameObject) == true) break;
 					Update(gameObject);
-					if (checkCollision(gameObject->snake, gameObject->gate))
-						isQuit = true;
+					if (checkCollision(gameObject->snake, gameObject->gate)) {
+						isQuit = true;		//xu ly ket thuc game
+						if (EndGame() == true) {
+							exit(0);	//thoat chuong trinh
+						}
+					}
 					Render(gameObject);
 					Sleep(100 / gameObject->snake->speed);
 				}
@@ -406,4 +410,6 @@ void Render(GAMEOBJECT* gameObject) {
 	SNAKE* snake = gameObject->snake;
 	renderSnake(snake);
 }
+
+
 

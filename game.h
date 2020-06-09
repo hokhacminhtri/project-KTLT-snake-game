@@ -1,5 +1,6 @@
 #pragma once
 #include "parameter.h"
+#include "saveandload.h"
 /***************Cac ham tao giao dien game***************/
 void DrawBoard(int x, int y, int width, int height);
 void OpenGame();
@@ -11,3 +12,4 @@ void NewGame(GAMEOBJECT* gameObject);
 bool Input(GAMEOBJECT* gameObject);
 void Update(GAMEOBJECT* gameObject);
 void Render(GAMEOBJECT* gameObject);
+
