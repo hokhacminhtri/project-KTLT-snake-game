@@ -34,7 +34,7 @@ SNAKE* initSnake() {
 	snake->prevEat = false;
 	snake->speed = 1;
 	snake->haveGate = false;
-	snake->vt = 0;
+	snake->vt = 1;
 	return snake;
 }
 
@@ -173,6 +173,17 @@ void enterGate(SNAKE* snake,POS* gate){
 
 void newLevel(SNAKE* snake){
 	snake->speed+=1;
+	if (snake->vt == strlen(fruit_name)) snake->vt = 0;
+	if (snake->speed == MAX_LEVEL) {
+		snake->speed = 1;
+		POS* newBody = (POS*)realloc(snake->body, 1 * sizeof(POS));
+		if (newBody != NULL) {
+			newBody->c = '1';
+			snake->body = newBody;
+			snake->length = 1;
+			snake->vt = 1;
+		}
+	}
 	srand((unsigned int)time(0));
 	snake->body[0].x = rand() % (WIDTH_CONSOLE-5) + 5 ;
 	snake->body[0].y = rand() % (HEIGHT_CONSOLE-5)+ 5;
