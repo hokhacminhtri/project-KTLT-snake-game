@@ -175,7 +175,7 @@ void Menu() {
 		system("cls");
 		TextColor(10);
 
-		DrawBoard(0, 0, WIDTH_CONSOLE, HEIGHT_CONSOLE);
+		DrawBoard(OFFSET_X, OFFSET_Y, WIDTH_CONSOLE, HEIGHT_CONSOLE);
 		NewGame();
 
 
@@ -211,7 +211,7 @@ void Menu() {
 		GAMEOBJECT* gameObject = LoadGame(saveFile);
 		system("cls");
 		TextColor(10);
-		DrawBoard(0, 0, WIDTH_CONSOLE, HEIGHT_CONSOLE);
+		DrawBoard(OFFSET_X, OFFSET_Y, WIDTH_CONSOLE, HEIGHT_CONSOLE);
 		NewGame(gameObject);
 		Menu();
 		//load game
@@ -257,7 +257,7 @@ void NewGame() {
 						//Hieu ung khi ran chet
 						DeathEffect(gameObject->snake);
 						if (EndGame(gameObject->snake) == true) {
-
+							GotoXY(80, 10);
 							exit(0);	//thoat chuong trinh
 						}
 					}
@@ -289,8 +289,14 @@ void NewGame(GAMEOBJECT* gameObject) { // Test
 				if (timer.timeStep()) {
 					if (Input(gameObject) == true) break;
 					Update(gameObject);
-					if (checkCollision(gameObject->snake, gameObject->gate))
+					if (checkCollision(gameObject->snake, gameObject->gate)) {
 						isQuit = true;
+						DeathEffect(gameObject->snake);
+						if (EndGame(gameObject->snake) == true) {
+							GotoXY(80, 10);
+							exit(0);	//thoat chuong trinh
+						}
+					}
 					Render(gameObject);
 					Sleep(100 / gameObject->snake->speed);
 				}
@@ -301,7 +307,6 @@ void NewGame(GAMEOBJECT* gameObject) { // Test
 }
 
 bool Input(GAMEOBJECT* gameObject) {
-	int n;
 	if ((GetAsyncKeyState(VK_UP) & 0x8000) != 0 || (GetAsyncKeyState(VK_UP) & 0x8000)) gameObject->snake->dir = up;
 	else if ((GetAsyncKeyState(VK_LEFT) & 0x8000) != 0 || (GetAsyncKeyState(VK_LEFT) & 0x8000)) gameObject->snake->dir = left;
 	else if ((GetAsyncKeyState(VK_DOWN) & 0x8000) != 0 || GetAsyncKeyState(VK_DOWN) & 0x8000) gameObject->snake->dir = down;
@@ -310,14 +315,14 @@ bool Input(GAMEOBJECT* gameObject) {
 	if (_kbhit()) {
 		int n = _getch();
 		if (n == int('t')) {
-			GotoXY(80, 10);
+			GotoXY(OFFSET_X + 20, 25);
 			string saveFile;
 			cout << "Nhap ten file load: ";
 			cin >> saveFile;
 			GAMEOBJECT* gameObject = LoadGame(saveFile);
 			system("cls");
 			TextColor(10);
-			DrawBoard(0, 0, WIDTH_CONSOLE, HEIGHT_CONSOLE);
+			DrawBoard(OFFSET_X, OFFSET_Y, WIDTH_CONSOLE, HEIGHT_CONSOLE);
 			NewGame(gameObject);
 
 			Menu();
@@ -332,12 +337,12 @@ bool Input(GAMEOBJECT* gameObject) {
 		else if (n == (int)'l') {
 				while (true)
 					if (SaveGame(gameObject)) break;
-				GotoXY(80, 11);
+				GotoXY(OFFSET_X + 20, 26);
 				system("pause");
-				GotoXY(80, 10);
-				cout << "                                 ";
-				GotoXY(80, 11);
-				cout << "                                 ";
+				GotoXY(OFFSET_X + 20, 25);
+				cout << "                                            ";
+				GotoXY(OFFSET_X + 20, 26);
+				cout << "                                            ";
 		}
 	}
 	if (gameObject->snake->dir == up && gameObject->snake->tmpDir == down) gameObject->snake->dir = down;
@@ -416,17 +421,17 @@ void Render(GAMEOBJECT* gameObject) {
 
 bool EndGame(SNAKE* snake)
 {
-		GotoXY(WIDTH_CONSOLE / 2, HEIGHT_CONSOLE / 2);
-		cout << "DIEM CUA BAN LA: " << snake->length - 1;
-		GotoXY(WIDTH_CONSOLE/2, HEIGHT_CONSOLE/2+3);
-		cout << "Nhap 0 de thoat game >> ";
-
-		int key;
-		cin >> key;
-		if (key == 0)
-			return true;
-		return false;
-
+	char key;
+	GotoXY(WIDTH_CONSOLE / 2 + OFFSET_X - 5, HEIGHT_CONSOLE / 2 - 3 + OFFSET_Y - 2);
+	cout << "GAME OVER!";
+	GotoXY(WIDTH_CONSOLE / 2 + OFFSET_X - 10, HEIGHT_CONSOLE / 2 + OFFSET_Y - 2);
+	cout << "DIEM CUA BAN LA: " << snake->length - 1;
+	GotoXY(WIDTH_CONSOLE / 2 + OFFSET_X - 10, HEIGHT_CONSOLE / 2 + 3 + OFFSET_Y - 2);
+	cout << "Nhap 0 de thoat game >> ";
+	cin >> key;
+	if (key == '0')
+		return true;
+	return false;
 }
 
 

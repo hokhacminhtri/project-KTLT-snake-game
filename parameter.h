@@ -32,6 +32,8 @@ void TextColor(int color);
 #define space 32
 #define WIDTH_CONSOLE  70
 #define HEIGHT_CONSOLE 20
+#define OFFSET_X 25
+#define OFFSET_Y 3
 #define GATE_SIZE 4
 #define MAX_LEVEL 7
 const char fruit_name[] = "1812058618120609";

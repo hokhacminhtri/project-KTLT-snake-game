@@ -25,8 +25,8 @@ SNAKE* initSnake() {
 	snake->length = 1;
 	snake->body = (POS*)malloc(snake->length * sizeof(POS));
 	srand((unsigned int)time(0));
-	snake->body[0].x = rand() % (WIDTH_CONSOLE-1) + 1 ;
-	snake->body[0].y = rand() % (HEIGHT_CONSOLE-1)+ 1;
+	snake->body[0].x = rand() % (WIDTH_CONSOLE - 1) + 1 + OFFSET_X;
+	snake->body[0].y = rand() % (HEIGHT_CONSOLE - 1) + 1 + OFFSET_Y;
 	// sua lai head theo random
 	snake->body[0].c = '1';
 	snake->dir = 0;
@@ -42,8 +42,8 @@ void generateFruit(SNAKE* snake, POS* fruit){
 	int x, y;
 	srand((unsigned int)time(NULL));
 	do{
-		x = rand() % (WIDTH_CONSOLE - 2) + 1;
-		y = rand() % (HEIGHT_CONSOLE - 2) + 1;
+		x = rand() % (WIDTH_CONSOLE - 2) + 1 + OFFSET_X;
+		y = rand() % (HEIGHT_CONSOLE - 2) + 1 + OFFSET_Y;
 	} 
 	while (IsValid(snake, x, y) == false);
 	fruit->x = x;
@@ -57,10 +57,10 @@ POS* generateGate(SNAKE* snake) {
 	POS* gate = new POS[4];
 	if (gate == NULL) return NULL;
 	
-	gate[0].x =10 ; gate[0].y = 10;
-	gate[1].x = 11; gate[1].y = 10;
-	gate[2].x = 12; gate[2].y = 10;
-	gate[3].x = 13; gate[3].y = 10;
+	gate[0].x = 10+ OFFSET_X; gate[0].y = 10+ OFFSET_Y;
+	gate[1].x = 11+ OFFSET_X; gate[1].y = 10+ OFFSET_Y;
+	gate[2].x = 12+ OFFSET_X; gate[2].y = 10+ OFFSET_Y;
+	gate[3].x = 13+ OFFSET_X; gate[3].y = 10+ OFFSET_Y;
 
 	gate[0].c = static_cast<char>(219);
 	gate[1].c = static_cast<char>(223);
@@ -93,9 +93,9 @@ void renderSnake(SNAKE* snake) {
 		drawChar(snake->body[i].x, snake->body[i].y, tailColor, snake->body[i].c);
 	}
 	TextColor(9);
-	GotoXY(WIDTH_CONSOLE + 3, 5);
+	GotoXY(WIDTH_CONSOLE + 5 + OFFSET_X, 5);
 	cout << "SCORE: " << snake->length - 1;
-	GotoXY(WIDTH_CONSOLE + 3, 7);
+	GotoXY(WIDTH_CONSOLE + 5 + OFFSET_X, 7);
 	cout << "SPEED: " << snake->speed;
 	TextColor(7);
 }
@@ -120,13 +120,136 @@ void renderGate(POS* gate, char c)
 	}
 }
 
+//void DeathEffect(SNAKE* snake)
+//{
+//	drawChar(snake->body[0].x, snake->body[0].y, headColor, 'x');
+//	Sleep(100);
+//	for (int i = 1; i < snake->length; i++) {
+//		drawChar(snake->body[i].x, snake->body[i].y, tailColor, 'x');
+//		Sleep(100);
+//	}
+//}
+
 void DeathEffect(SNAKE* snake)
 {
-	drawChar(snake->body[0].x, snake->body[0].y, headColor, 'x');
-	Sleep(100);
-	for (int i = 1; i < snake->length; i++) {
-		drawChar(snake->body[i].x, snake->body[i].y, tailColor, 'x');
-		Sleep(100);
+
+	for (int i = snake->length; i >=0; i--) {
+		drawChar(snake->body[i].x, snake->body[i].y, tailColor, ' ');
+		Sleep(60);
+	}
+	drawChar(snake->body[0].x, snake->body[0].y, red, '*');
+	Sleep(120);
+	for (int i = 0; i < 7; i++) {
+		if (i == 0)
+		{
+			drawChar(snake->body[0].x, snake->body[0].y, red, '#');
+			drawChar(snake->body[0].x - 1, snake->body[0].y, red, '*');
+			drawChar(snake->body[0].x + 1, snake->body[0].y, red, '*');
+			Sleep(120);
+		}
+		if (i == 1)
+		{
+			drawChar(snake->body[0].x, snake->body[0].y, red, '@');
+			drawChar(snake->body[0].x - 1, snake->body[0].y, red, '#');
+			drawChar(snake->body[0].x + 1, snake->body[0].y, red, '#');
+			drawChar(snake->body[0].x, snake->body[0].y - 1, red, '#');
+			drawChar(snake->body[0].x, snake->body[0].y + 1, red, '#');
+			drawChar(snake->body[0].x - 1, snake->body[0].y - 1, red, '*');
+			drawChar(snake->body[0].x + 1, snake->body[0].y - 1, red, '*');
+			drawChar(snake->body[0].x - 1, snake->body[0].y + 1, red, '*');
+			drawChar(snake->body[0].x + 1, snake->body[0].y + 1, red, '*');
+			Sleep(120);
+		}
+		if (i == 2)
+		{
+			{
+				drawChar(snake->body[0].x, snake->body[0].y, red, '@');
+				drawChar(snake->body[0].x - 1, snake->body[0].y, red, '#');
+				drawChar(snake->body[0].x - 2, snake->body[0].y, red, '#');
+				drawChar(snake->body[0].x - 3, snake->body[0].y, red, '*');
+				drawChar(snake->body[0].x + 1, snake->body[0].y, red, '#');
+				drawChar(snake->body[0].x + 2, snake->body[0].y, red, '#');
+				drawChar(snake->body[0].x + 3, snake->body[0].y, red, '*');
+				drawChar(snake->body[0].x, snake->body[0].y + 1, red, '#');
+				drawChar(snake->body[0].x, snake->body[0].y + 2, red, '#');
+				drawChar(snake->body[0].x, snake->body[0].y + 3, red, '*');
+				drawChar(snake->body[0].x, snake->body[0].y - 1, red, '#');
+				drawChar(snake->body[0].x, snake->body[0].y - 2, red, '#');
+				drawChar(snake->body[0].x, snake->body[0].y - 3, red, '*');
+				drawChar(snake->body[0].x - 1, snake->body[0].y - 1, red, '#');
+				drawChar(snake->body[0].x - 2, snake->body[0].y - 1, red, '*');
+				drawChar(snake->body[0].x - 3, snake->body[0].y - 1, red, '*');
+				drawChar(snake->body[0].x + 1, snake->body[0].y - 1, red, '#');
+				drawChar(snake->body[0].x + 2, snake->body[0].y - 1, red, '*');
+				drawChar(snake->body[0].x + 3, snake->body[0].y - 1, red, '*');
+				drawChar(snake->body[0].x - 1, snake->body[0].y - 2, red, '#');
+				drawChar(snake->body[0].x - 2, snake->body[0].y - 2, red, '*');
+				drawChar(snake->body[0].x + 1, snake->body[0].y - 2, red, '#');
+				drawChar(snake->body[0].x + 2, snake->body[0].y - 2, red, '*');
+				drawChar(snake->body[0].x - 1, snake->body[0].y + 1, red, '#');
+				drawChar(snake->body[0].x - 2, snake->body[0].y + 1, red, '*');
+				drawChar(snake->body[0].x - 3, snake->body[0].y + 1, red, '*');
+				drawChar(snake->body[0].x + 1, snake->body[0].y + 1, red, '#');
+				drawChar(snake->body[0].x + 2, snake->body[0].y + 1, red, '*');
+				drawChar(snake->body[0].x + 3, snake->body[0].y + 1, red, '*');
+				drawChar(snake->body[0].x - 1, snake->body[0].y + 2, red, '#');
+				drawChar(snake->body[0].x - 2, snake->body[0].y + 2, red, '*');
+				drawChar(snake->body[0].x + 1, snake->body[0].y + 2, red, '#');
+				drawChar(snake->body[0].x + 2, snake->body[0].y + 2, red, '*');
+			}
+			Sleep(120);
+		}
+		if (i == 3)
+		{
+			drawChar(snake->body[0].x, snake->body[0].y, tailColor, ' ');
+			Sleep(120);
+		}
+		if (i == 4)
+		{
+			drawChar(snake->body[0].x - 1, snake->body[0].y, tailColor, ' ');
+			drawChar(snake->body[0].x + 1, snake->body[0].y, tailColor, ' ');
+			Sleep(120);
+		}
+		if (i == 5)
+		{
+			drawChar(snake->body[0].x, snake->body[0].y - 1, tailColor, ' ');
+			drawChar(snake->body[0].x, snake->body[0].y + 1, tailColor, ' ');
+			drawChar(snake->body[0].x - 1, snake->body[0].y - 1, tailColor, ' ');
+			drawChar(snake->body[0].x + 1, snake->body[0].y - 1, tailColor, ' ');
+			drawChar(snake->body[0].x - 1, snake->body[0].y + 1, tailColor, ' ');
+			drawChar(snake->body[0].x + 1, snake->body[0].y + 1, tailColor, ' ');
+			Sleep(120);
+		}
+		if (i == 6)
+		{
+			{
+				drawChar(snake->body[0].x - 2, snake->body[0].y, tailColor, ' ');
+				drawChar(snake->body[0].x - 3, snake->body[0].y, tailColor, ' ');
+				drawChar(snake->body[0].x + 2, snake->body[0].y, tailColor, ' ');
+				drawChar(snake->body[0].x + 3, snake->body[0].y, tailColor, ' ');
+				drawChar(snake->body[0].x, snake->body[0].y + 2, tailColor, ' ');
+				drawChar(snake->body[0].x, snake->body[0].y + 3, tailColor, ' ');
+				drawChar(snake->body[0].x, snake->body[0].y - 2, tailColor, ' ');
+				drawChar(snake->body[0].x, snake->body[0].y - 3, tailColor, ' ');
+				drawChar(snake->body[0].x - 2, snake->body[0].y - 1, tailColor, ' ');
+				drawChar(snake->body[0].x - 3, snake->body[0].y - 1, tailColor, ' ');
+				drawChar(snake->body[0].x + 2, snake->body[0].y - 1, tailColor, ' ');
+				drawChar(snake->body[0].x + 3, snake->body[0].y - 1, tailColor, ' ');
+				drawChar(snake->body[0].x - 1, snake->body[0].y - 2, tailColor, ' ');
+				drawChar(snake->body[0].x - 2, snake->body[0].y - 2, tailColor, ' ');
+				drawChar(snake->body[0].x + 1, snake->body[0].y - 2, tailColor, ' ');
+				drawChar(snake->body[0].x + 2, snake->body[0].y - 2, tailColor, ' ');
+				drawChar(snake->body[0].x - 2, snake->body[0].y + 1, tailColor, ' ');
+				drawChar(snake->body[0].x - 3, snake->body[0].y + 1, tailColor, ' ');
+				drawChar(snake->body[0].x + 2, snake->body[0].y + 1, tailColor, ' ');
+				drawChar(snake->body[0].x + 3, snake->body[0].y + 1, tailColor, ' ');
+				drawChar(snake->body[0].x - 1, snake->body[0].y + 2, tailColor, ' ');
+				drawChar(snake->body[0].x - 2, snake->body[0].y + 2, tailColor, ' ');
+				drawChar(snake->body[0].x + 1, snake->body[0].y + 2, tailColor, ' ');
+				drawChar(snake->body[0].x + 2, snake->body[0].y + 2, tailColor, ' ');
+			}
+			Sleep(120);
+		}
 	}
 }
 
@@ -155,10 +278,10 @@ void deleteSnake(SNAKE* snake) {
 
 bool checkCollision(SNAKE* snake,POS* gate){
 	
-	if(snake->body[0].x<=0||snake->body[0].x >= WIDTH_CONSOLE)
+	if (snake->body[0].x <= 25 || snake->body[0].x >= WIDTH_CONSOLE + OFFSET_X)
 		return true;
 
-	if(snake->body[0].y<=0||snake->body[0].y >= HEIGHT_CONSOLE)
+	if (snake->body[0].y <= 3 || snake->body[0].y >= HEIGHT_CONSOLE + OFFSET_Y)
 		return true;
 
 	if(snake->dir==0)
@@ -200,8 +323,8 @@ void newLevel(SNAKE* snake){
 		}
 	}
 	srand((unsigned int)time(0));
-	snake->body[0].x = rand() % (WIDTH_CONSOLE-5) + 5 ;
-	snake->body[0].y = rand() % (HEIGHT_CONSOLE-5)+ 5;
+	snake->body[0].x = rand() % (WIDTH_CONSOLE - 5) + 5 + OFFSET_X;
+	snake->body[0].y = rand() % (HEIGHT_CONSOLE - 5) + 5 + OFFSET_Y;
 	for (int i = 1; i <= snake->length-1; i++) {
 		snake->body[i].x = snake->body[0].x-1;
 		snake->body[i].y = snake->body[0].y;
