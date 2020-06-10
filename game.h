@@ -12,5 +12,5 @@ void NewGame(GAMEOBJECT* gameObject);
 bool Input(GAMEOBJECT* gameObject);
 void Update(GAMEOBJECT* gameObject);
 void Render(GAMEOBJECT* gameObject);
-bool EndGame();
+bool EndGame(SNAKE* snake);
 

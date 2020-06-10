@@ -92,6 +92,12 @@ void renderSnake(SNAKE* snake) {
 	for (int i = 1; i < snake->length; i++) {
 		drawChar(snake->body[i].x, snake->body[i].y, tailColor, snake->body[i].c);
 	}
+	TextColor(9);
+	GotoXY(WIDTH_CONSOLE + 3, 5);
+	cout << "SCORE: " << snake->length - 1;
+	GotoXY(WIDTH_CONSOLE + 3, 7);
+	cout << "SPEED: " << snake->speed;
+	TextColor(7);
 }
 
 void renderFruit(POS* fruit) {
@@ -111,6 +117,16 @@ void renderGate(POS* gate, char c)
 	for (int i = 0; i < GATE_SIZE; i++)
 	{
 		drawChar(gate[i].x, gate[i].y, tailColor, c);
+	}
+}
+
+void DeathEffect(SNAKE* snake)
+{
+	drawChar(snake->body[0].x, snake->body[0].y, headColor, 'x');
+	Sleep(100);
+	for (int i = 1; i < snake->length; i++) {
+		drawChar(snake->body[i].x, snake->body[i].y, tailColor, 'x');
+		Sleep(100);
 	}
 }
 

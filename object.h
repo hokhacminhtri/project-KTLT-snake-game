@@ -33,6 +33,7 @@ void renderSnake(SNAKE* snake);
 void renderFruit(POS* fruit);
 void renderGate(POS* gate);
 void renderGate(POS* gate, char c);
+void DeathEffect(SNAKE* snake);
 
 void pushTopTail(SNAKE* snake, POS* newTail);
 bool checkCollision(SNAKE* snake,POS* gate);//Kiem tra va cham

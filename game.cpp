@@ -255,13 +255,8 @@ void NewGame() {
 					if (checkCollision(gameObject->snake, gameObject->gate)) {
 						isQuit = true;		//xu ly ket thuc game
 						//Hieu ung khi ran chet
-						drawChar(snake->body[0].x, snake->body[0].y, headColor,'x');
-						Sleep(100);
-						for (int i = 1; i < snake->length; i++) {
-							drawChar(snake->body[i].x, snake->body[i].y, tailColor,'x');
-							Sleep(100);
-						}
-						if (EndGame() == true) {
+						DeathEffect(gameObject->snake);
+						if (EndGame(gameObject->snake) == true) {
 
 							exit(0);	//thoat chuong trinh
 						}
@@ -419,9 +414,11 @@ void Render(GAMEOBJECT* gameObject) {
 	renderSnake(snake);
 }
 
-bool EndGame()
+bool EndGame(SNAKE* snake)
 {
-		GotoXY(WIDTH_CONSOLE + 3, 3);
+		GotoXY(WIDTH_CONSOLE / 2, HEIGHT_CONSOLE / 2);
+		cout << "DIEM CUA BAN LA: " << snake->length - 1;
+		GotoXY(WIDTH_CONSOLE/2, HEIGHT_CONSOLE/2+3);
 		cout << "Nhap 0 de thoat game >> ";
 
 		int key;
