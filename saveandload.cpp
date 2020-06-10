@@ -1,14 +1,6 @@
 #include "saveandload.h"
 
-bool EndGame() {
-	cout << "Nhap 0 de thoat game >> ";
 
-	int key;
-	cin >> key;
-	if (key == 0)
-		return true;
-	return false;
-}
 
 int SaveGame(GAMEOBJECT* gameObject)
 {

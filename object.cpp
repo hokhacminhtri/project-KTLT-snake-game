@@ -40,7 +40,6 @@ SNAKE* initSnake() {
 
 void generateFruit(SNAKE* snake, POS* fruit){
 	int x, y;
-	//char fruit_name[39] = { 8,1,2,0,5,8,6,1,8,1,2,0,6,0,9,1,8,1,2,0,5,9,8,1,8,1,2,0,3,2,2,1,8,1,2,0,3,1,6 };
 	srand((unsigned int)time(NULL));
 	do{
 		x = rand() % (WIDTH_CONSOLE - 2) + 1;
@@ -57,11 +56,11 @@ POS* generateGate(SNAKE* snake) {
 	if (snake == NULL) return NULL;
 	POS* gate = new POS[4];
 	if (gate == NULL) return NULL;
-	//sua thanh random
-	gate[0].x = 16; gate[0].y = 10;
-	gate[1].x = 17; gate[1].y = 10;
-	gate[2].x = 18; gate[2].y = 10;
-	gate[3].x = 19; gate[3].y = 10;
+	
+	gate[0].x =10 ; gate[0].y = 10;
+	gate[1].x = 11; gate[1].y = 10;
+	gate[2].x = 12; gate[2].y = 10;
+	gate[3].x = 13; gate[3].y = 10;
 
 	gate[0].c = static_cast<char>(219);
 	gate[1].c = static_cast<char>(223);

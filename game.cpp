@@ -3,21 +3,21 @@
 void DrawBoard(int x, int y, int width, int height)
 {
 	GotoXY(x, y);
-	cout << 'X';
+	cout << static_cast<char>(220);
 	for (int i = 1; i < width; i++)
-		cout << 'X';
-	cout << 'X';
+		cout << static_cast<char>(220);
+	cout << static_cast<char>(220);
 	GotoXY(x, height + y);
-	cout << 'X';
+	cout << static_cast<char>(223);
 	for (int i = 0; i < width; i++)
-		cout << 'X';
-	cout << 'X';
+		cout << static_cast<char>(223);
+
 	for (int i = y + 1; i < height + y; i++)
 	{
 		GotoXY(x, i);
-		cout << 'X';
+		cout << static_cast<char>(219);
 		GotoXY(x + width, i);
-		cout << 'X';
+		cout << static_cast<char>(219);
 	}
 }
 
@@ -254,7 +254,15 @@ void NewGame() {
 					Update(gameObject);
 					if (checkCollision(gameObject->snake, gameObject->gate)) {
 						isQuit = true;		//xu ly ket thuc game
+						//Hieu ung khi ran chet
+						drawChar(snake->body[0].x, snake->body[0].y, headColor,'x');
+						Sleep(100);
+						for (int i = 1; i < snake->length; i++) {
+							drawChar(snake->body[i].x, snake->body[i].y, tailColor,'x');
+							Sleep(100);
+						}
 						if (EndGame() == true) {
+
 							exit(0);	//thoat chuong trinh
 						}
 					}
@@ -409,6 +417,19 @@ void Update(GAMEOBJECT* gameObject) {
 void Render(GAMEOBJECT* gameObject) {
 	SNAKE* snake = gameObject->snake;
 	renderSnake(snake);
+}
+
+bool EndGame()
+{
+		GotoXY(WIDTH_CONSOLE + 3, 3);
+		cout << "Nhap 0 de thoat game >> ";
+
+		int key;
+		cin >> key;
+		if (key == 0)
+			return true;
+		return false;
+
 }
 
 
