@@ -1,7 +1,6 @@
 #include "saveandload.h"
 
 
-
 int SaveGame(GAMEOBJECT* gameObject)
 {
 	string saveFile;

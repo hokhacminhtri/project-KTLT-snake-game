@@ -138,7 +138,7 @@ void Menu() {
 
 
 	TextColor(13);
-	GotoXY(30, 20);	
+	GotoXY(30, 20);
 	cout << "PLAY GAME" << endl;
 	GotoXY(30, 22);
 	cout << "ABOUT (thong tin cac thanh vien nhom)" << endl;
@@ -207,7 +207,7 @@ void Menu() {
 		TextColor(10);
 		GotoXY(50, 10);
 		string saveFile;
-		cout << "Nhap ten file load: "; cin >> saveFile;
+		cout << "Nhap ten file load (Nhap duoi file .txt): "; cin >> saveFile;
 		GAMEOBJECT* gameObject = LoadGame(saveFile);
 		system("cls");
 		TextColor(10);
@@ -282,7 +282,7 @@ void NewGame(GAMEOBJECT* gameObject) { // Test
 		POS* gate = gameObject->gate;
 		if (snake != NULL && fruit != NULL && gate != NULL) {
 			renderSnake(gameObject->snake);
-			if(snake->haveGate==true) renderGate(gate);
+			if (snake->haveGate == true) renderGate(gate);
 			else renderFruit(gameObject->fruit);
 			_getch();
 			while (!isQuit) {
@@ -311,10 +311,10 @@ bool Input(GAMEOBJECT* gameObject) {
 	else if ((GetAsyncKeyState(VK_LEFT) & 0x8000) != 0 || (GetAsyncKeyState(VK_LEFT) & 0x8000)) gameObject->snake->dir = left;
 	else if ((GetAsyncKeyState(VK_DOWN) & 0x8000) != 0 || GetAsyncKeyState(VK_DOWN) & 0x8000) gameObject->snake->dir = down;
 	else if ((GetAsyncKeyState(VK_RIGHT) & 0x8000) != 0 || GetAsyncKeyState(VK_LEFT) & 0x8000) gameObject->snake->dir = right;
-	
+
 	if (_kbhit()) {
 		int n = _getch();
-		if (n == int('t')) {
+		if (n == int('t')) {	//tai game
 			GotoXY(OFFSET_X + 20, 25);
 			string saveFile;
 			cout << "Nhap ten file load: ";
@@ -327,22 +327,35 @@ bool Input(GAMEOBJECT* gameObject) {
 
 			Menu();
 		}
-		else if (n == int('p')) {
+		else if (n == int('p')) { //dung game khi dang choi (pause)
+			GotoXY(OFFSET_X + WIDTH_CONSOLE / 2 - 2, OFFSET_Y - 1);
+			TextColor(10);
+			cout << "PAUSE";
 			while (true)
-				if ((GetAsyncKeyState(continueGame) & 0x8000) != 0 || GetAsyncKeyState(continueGame) & 0x8000) break;
+				if ((GetAsyncKeyState(continueGame) & 0x8000) != 0 || GetAsyncKeyState(continueGame) & 0x8000) {
+					GotoXY(OFFSET_X + WIDTH_CONSOLE / 2 - 2, OFFSET_Y - 1);
+					cout << "     ";
+					break;
+				}
 		}
-		else if (n == (int)'x') {
-				return true;
+		else if (n == (int)'x') {	//tro ve man hinh menu khi dang choi
+			return true;
 		}
-		else if (n == (int)'l') {
-				while (true)
-					if (SaveGame(gameObject)) break;
-				GotoXY(OFFSET_X + 20, 26);
-				system("pause");
-				GotoXY(OFFSET_X + 20, 25);
-				cout << "                                            ";
-				GotoXY(OFFSET_X + 20, 26);
-				cout << "                                            ";
+		else if (n == (int)'l') {	//luu game
+			while (true)
+				if (SaveGame(gameObject)) break;
+			GotoXY(OFFSET_X + 20, 26);
+			system("pause");
+			GotoXY(OFFSET_X + 20, 25);
+			cout << "                                            ";
+			GotoXY(OFFSET_X + 20, 26);
+			cout << "                                            ";
+		}
+		else if (n == 'm') {	//tat nhac
+			PlaySound(NULL, NULL, NULL);
+		}
+		else if (n == 'u') {
+			PlaySound(TEXT("GameMusic"), NULL, SND_ASYNC);
 		}
 	}
 	if (gameObject->snake->dir == up && gameObject->snake->tmpDir == down) gameObject->snake->dir = down;
@@ -350,7 +363,7 @@ bool Input(GAMEOBJECT* gameObject) {
 	if (gameObject->snake->dir == left && gameObject->snake->tmpDir == right) gameObject->snake->dir = right;
 	if (gameObject->snake->dir == right && gameObject->snake->tmpDir == left) gameObject->snake->dir = left;
 	gameObject->snake->tmpDir = gameObject->snake->dir;
-	
+
 	return 0;
 }
 
@@ -421,6 +434,7 @@ void Render(GAMEOBJECT* gameObject) {
 
 bool EndGame(SNAKE* snake)
 {
+	PlaySound(TEXT("GameOver"), NULL, SND_ASYNC);
 	char key;
 	GotoXY(WIDTH_CONSOLE / 2 + OFFSET_X - 5, HEIGHT_CONSOLE / 2 - 3 + OFFSET_Y - 2);
 	cout << "GAME OVER!";
@@ -434,5 +448,25 @@ bool EndGame(SNAKE* snake)
 	return false;
 }
 
+void GuideTable() {
+	TextColor(rand() % 14 + 1);
+	GotoXY(WIDTH_CONSOLE + 5 + OFFSET_X, 9);
+	cout << "====================";
+	TextColor(rand() % 14 + 1);
+	GotoXY(WIDTH_CONSOLE + 5 + OFFSET_X, 11);
+	cout << "Nhan (t) de tai game (Nhap duoi file .txt)" << endl;
+	TextColor(rand() % 14 + 1);
+	GotoXY(WIDTH_CONSOLE + 5 + OFFSET_X, 13);
+	cout << "Nhan (l) de luu game (Nhap duoi file .txt)" << endl;
+	TextColor(rand() % 14 + 1);
+	GotoXY(WIDTH_CONSOLE + 5 + OFFSET_X, 15);
+	cout << "Nhan (m) de tat nhac" << endl;
+	TextColor(rand() % 14 + 1);
+	GotoXY(WIDTH_CONSOLE + 5 + OFFSET_X, 17);
+	cout << "Nhan (u) de bat nhac" << endl;
+	TextColor(rand() % 14 + 1);
+	GotoXY(WIDTH_CONSOLE + 5 + OFFSET_X, 19);
+	cout << "Nhan (x) de thoat game khi dang choi" << endl;
+}
 
 

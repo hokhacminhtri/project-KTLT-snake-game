@@ -98,6 +98,8 @@ void renderSnake(SNAKE* snake) {
 	GotoXY(WIDTH_CONSOLE + 5 + OFFSET_X, 7);
 	cout << "SPEED: " << snake->speed;
 	TextColor(7);
+
+	GuideTable();
 }
 
 void renderFruit(POS* fruit) {

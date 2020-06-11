@@ -4,6 +4,7 @@
 #include "game.h"
 
 int main(){
+    PlaySound(TEXT("GameMusic"), NULL, SND_ASYNC);
     OpenGame();
     return 0;
 }
