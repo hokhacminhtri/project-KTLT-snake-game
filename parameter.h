@@ -36,7 +36,7 @@ void TextColor(int color);
 #define OFFSET_Y 3
 #define GATE_SIZE 4
 #define MAX_LEVEL 7
-const char fruit_name[] = "1812058618120609";
+const char fruit_name[] = "1812058618120609181205981812032218120316";
 void drawChar(int x, int y, int color, int character);
 void drawStr(int x, int y, int color, string longString);
 bool IsValid(SNAKE* snake, int x, int y);
