@@ -256,6 +256,7 @@ void DeathEffect(SNAKE* snake)
 }
 
 void pushTopTail(SNAKE* snake, POS* newTail) {
+	//PlaySound(TEXT("EatFruit"), NULL, SND_ASYNC);
 	POS* newBody = (POS*)realloc(snake->body, (snake->length + 1) * sizeof(POS));
 	if (newBody != NULL) {
 		newBody[snake->length].c = newTail->c;
@@ -312,6 +313,7 @@ void enterGate(SNAKE* snake,POS* gate){
 }
 
 void newLevel(SNAKE* snake){
+	PlaySound(TEXT("NextLevel"), NULL, SND_ASYNC);
 	snake->speed+=1;
 	if (snake->vt == strlen(fruit_name)) snake->vt = 0;
 	if (snake->speed == MAX_LEVEL) {

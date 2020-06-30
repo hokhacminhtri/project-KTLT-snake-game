@@ -218,6 +218,7 @@ void Menu() {
 	}
 	if (option1 == 4) {
 		//thoat game
+		exit(0);
 	}
 }
 
@@ -306,15 +307,20 @@ void NewGame(GAMEOBJECT* gameObject) { // Test
 	deleteGameObject(gameObject);
 }
 
-bool Input(GAMEOBJECT* gameObject) {
-	if ((GetAsyncKeyState(VK_UP) & 0x8000) != 0 || (GetAsyncKeyState(VK_UP) & 0x8000)) gameObject->snake->dir = up;
-	else if ((GetAsyncKeyState(VK_LEFT) & 0x8000) != 0 || (GetAsyncKeyState(VK_LEFT) & 0x8000)) gameObject->snake->dir = left;
-	else if ((GetAsyncKeyState(VK_DOWN) & 0x8000) != 0 || GetAsyncKeyState(VK_DOWN) & 0x8000) gameObject->snake->dir = down;
-	else if ((GetAsyncKeyState(VK_RIGHT) & 0x8000) != 0 || GetAsyncKeyState(VK_LEFT) & 0x8000) gameObject->snake->dir = right;
-
+bool Input(GAMEOBJECT* gameObject) {	
 	if (_kbhit()) {
-		int n = _getch();
-		if (n == int('t')) {	//tai game
+		int control = _getch();
+		//xu ly dieu khien snake (cac phim mui ten va WASD)
+		if ((GetAsyncKeyState(VK_UP) & 0x8000) != 0 || (GetAsyncKeyState(VK_UP) & 0x8000) || control == (int)'w')
+			gameObject->snake->dir = up;
+		else if ((GetAsyncKeyState(VK_LEFT) & 0x8000) != 0 || (GetAsyncKeyState(VK_LEFT) & 0x8000) || control == (int)'a')
+			gameObject->snake->dir = left;
+		else if ((GetAsyncKeyState(VK_DOWN) & 0x8000) != 0 || GetAsyncKeyState(VK_DOWN) & 0x8000 || control == (int)'s')
+			gameObject->snake->dir = down;
+		else if ((GetAsyncKeyState(VK_RIGHT) & 0x8000) != 0 || GetAsyncKeyState(VK_LEFT) & 0x8000 || control == (int)'d')
+			gameObject->snake->dir = right;
+
+		if (control == (int)'t') {	//tai game
 			GotoXY(OFFSET_X + 20, 25);
 			string saveFile;
 			cout << "Nhap ten file load: ";
@@ -327,7 +333,7 @@ bool Input(GAMEOBJECT* gameObject) {
 
 			Menu();
 		}
-		else if (n == int('p')) { //dung game khi dang choi (pause)
+		else if (control == (int)'p') { //dung game khi dang choi (pause)
 			GotoXY(OFFSET_X + WIDTH_CONSOLE / 2 - 2, OFFSET_Y - 1);
 			TextColor(10);
 			cout << "PAUSE";
@@ -338,10 +344,10 @@ bool Input(GAMEOBJECT* gameObject) {
 					break;
 				}
 		}
-		else if (n == (int)'x') {	//tro ve man hinh menu khi dang choi
+		else if (control == (int)'x') {	//tro ve man hinh menu khi dang choi
 			return true;
 		}
-		else if (n == (int)'l') {	//luu game
+		else if (control == (int)'l') {	//luu game
 			while (true)
 				if (SaveGame(gameObject)) break;
 			GotoXY(OFFSET_X + 20, 26);
@@ -351,13 +357,78 @@ bool Input(GAMEOBJECT* gameObject) {
 			GotoXY(OFFSET_X + 20, 26);
 			cout << "                                            ";
 		}
-		else if (n == 'm') {	//tat nhac
+		else if (control == 'm') {	//tat nhac
 			PlaySound(NULL, NULL, NULL);
 		}
-		else if (n == 'u') {
+		else if (control == 'u') {
 			PlaySound(TEXT("GameMusic"), NULL, SND_ASYNC);
 		}
 	}
+
+	////dieu khien bang WASD
+	//if (_kbhit()) {
+	//	int control = _getch();
+	//	if (control == (int)'w') {
+	//		gameObject->snake->dir = up;
+	//	}
+	//	else if (control == (int)'a') {
+	//		gameObject->snake->dir = left;
+	//	}
+	//	else if (control == (int)'s') {
+	//		gameObject->snake->dir = down;
+	//	}
+	//	else if (control == (int)'d') {
+	//		gameObject->snake->dir = right;
+	//	}
+	//}
+
+	//if (_kbhit()) {
+	//	int n = _getch();
+	//	if (n == int('t')) {	//tai game
+	//		GotoXY(OFFSET_X + 20, 25);
+	//		string saveFile;
+	//		cout << "Nhap ten file load: ";
+	//		cin >> saveFile;
+	//		GAMEOBJECT* gameObject = LoadGame(saveFile);
+	//		system("cls");
+	//		TextColor(10);
+	//		DrawBoard(OFFSET_X, OFFSET_Y, WIDTH_CONSOLE, HEIGHT_CONSOLE);
+	//		NewGame(gameObject);
+
+	//		Menu();
+	//	}
+	//	else if (n == int('p')) { //dung game khi dang choi (pause)
+	//		GotoXY(OFFSET_X + WIDTH_CONSOLE / 2 - 2, OFFSET_Y - 1);
+	//		TextColor(10);
+	//		cout << "PAUSE";
+	//		while (true)
+	//			if ((GetAsyncKeyState(continueGame) & 0x8000) != 0 || GetAsyncKeyState(continueGame) & 0x8000) {
+	//				GotoXY(OFFSET_X + WIDTH_CONSOLE / 2 - 2, OFFSET_Y - 1);
+	//				cout << "     ";
+	//				break;
+	//			}
+	//	}
+	//	else if (n == (int)'x') {	//tro ve man hinh menu khi dang choi
+	//		return true;
+	//	}
+	//	else if (n == (int)'l') {	//luu game
+	//		while (true)
+	//			if (SaveGame(gameObject)) break;
+	//		GotoXY(OFFSET_X + 20, 26);
+	//		system("pause");
+	//		GotoXY(OFFSET_X + 20, 25);
+	//		cout << "                                            ";
+	//		GotoXY(OFFSET_X + 20, 26);
+	//		cout << "                                            ";
+	//	}
+	//	else if (n == 'm') {	//tat nhac
+	//		PlaySound(NULL, NULL, NULL);
+	//	}
+	//	else if (n == 'u') {
+	//		PlaySound(TEXT("GameMusic"), NULL, SND_ASYNC);
+	//	}
+	//}
+
 	if (gameObject->snake->dir == up && gameObject->snake->tmpDir == down) gameObject->snake->dir = down;
 	if (gameObject->snake->dir == down && gameObject->snake->tmpDir == up) gameObject->snake->dir = up;
 	if (gameObject->snake->dir == left && gameObject->snake->tmpDir == right) gameObject->snake->dir = right;
