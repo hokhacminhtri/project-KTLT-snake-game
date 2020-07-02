@@ -25,7 +25,7 @@ void TextColor(int color)
 }
 
 
-void drawChar(int x, int y, int color, int character) {
+void drawChar(int x, int y, int color, int character) { 
 	char symbol = character;
 	HANDLE hStdout;
 	COORD destCoord;
@@ -74,7 +74,7 @@ bool IsValid(SNAKE* snake, int x, int y){
 	return true;
 }
 
-//Ham kiem tra vi tri fruit có trung voi Gate
+//Ham kiem tra vi tri fruit cÃ³ trung voi Gate
 bool IsValid1(POS* gate, int x, int y)
 {
 	int i;
