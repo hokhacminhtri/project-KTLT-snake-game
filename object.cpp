@@ -15,18 +15,18 @@ POS POS_Gate(SNAKE* snake)
 
 
 GAMEOBJECT* initGameObject() {
-	GAMEOBJECT* gameObject = new GAMEOBJECT;
+	GAMEOBJECT* gameObject = new GAMEOBJECT;　// Khoi tao game object
 	if (gameObject == NULL) return NULL;
 	
-	SNAKE* snake = initSnake();
+	SNAKE* snake = initSnake(); // Khoi tao snake
 	if (snake == NULL) return gameObject;
 	gameObject->snake = snake;
 
-	POS* gate = generateGate(gameObject->snake);
+	POS* gate = generateGate(gameObject->snake); // Khoi tao gate
 	if (gate == NULL) return gameObject;
 	gameObject->gate = gate;
 	
-	POS* fruit = new POS;
+	POS* fruit = new POS; // Khoi tao fruit
 	if (fruit == NULL) return gameObject;
 	generateFruit(gameObject->snake, fruit,gate);
 	gameObject->fruit = fruit;
@@ -41,7 +41,6 @@ SNAKE* initSnake() {
 	srand((unsigned int)time(0));
 	snake->body[0].x = rand() % (WIDTH_CONSOLE - 1) + 1 + OFFSET_X;
 	snake->body[0].y = rand() % (HEIGHT_CONSOLE - 1) + 1 + OFFSET_Y;
-	// sua lai head theo random
 	snake->body[0].c = '1';
 	snake->dir = 0;
 	snake->tmpDir = 0;
@@ -104,9 +103,9 @@ void deleteGameObject(GAMEOBJECT* gameObject) {
 }
 
 void renderSnake(SNAKE* snake) {
-	drawChar(snake->body[0].x, snake->body[0].y, headColor, snake->body[0].c);
+	drawChar(snake->body[0].x, snake->body[0].y, headColor, snake->body[0].c); // Ve head
 	for (int i = 1; i < snake->length; i++) {
-		drawChar(snake->body[i].x, snake->body[i].y, tailColor, snake->body[i].c);
+		drawChar(snake->body[i].x, snake->body[i].y, tailColor, snake->body[i].c); // ve tail
 	}
 	TextColor(9);
 	GotoXY(WIDTH_CONSOLE + 5 + OFFSET_X, 5);
@@ -271,7 +270,7 @@ void DeathEffect(SNAKE* snake)
 	}
 }
 
-void pushTopTail(SNAKE* snake, POS* newTail) {
+void pushTopTail(SNAKE* snake, POS* newTail) { // Tang kich thuoc khi an fruit
 	//PlaySound(TEXT("EatFruit"), NULL, SND_ASYNC);
 	POS* newBody = (POS*)realloc(snake->body, (snake->length + 1) * sizeof(POS));
 	if (newBody != NULL) {
