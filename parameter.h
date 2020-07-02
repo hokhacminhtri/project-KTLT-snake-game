@@ -37,7 +37,7 @@ void TextColor(int color);
 #define GATE_SIZE 4
 #define MAX_LEVEL 7
 const char fruit_name[] = "1812058618120609181205981812032218120316";
-void drawChar(int x, int y, int color, int character);
-void drawStr(int x, int y, int color, string longString);
+void drawChar(int x, int y, int color, int character); // Ham ve ki tu theo toa do va mau
+void drawStr(int x, int y, int color, string longString); // Ham ve chuoi theo toa do va mau
 bool IsValid(SNAKE* snake, int x, int y);
 bool IsValid1(POS* gate, int x, int y);
