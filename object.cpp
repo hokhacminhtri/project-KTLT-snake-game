@@ -1,4 +1,18 @@
 #include "game.h"
+// Ham tao vi tri cho Gate
+POS POS_Gate(SNAKE* snake)
+{
+	POS temp;
+	srand((unsigned int)time(0));
+	do {
+		temp.x =  rand() % (WIDTH_CONSOLE - 2) / 2 + 1 + OFFSET_X;
+		temp.y =  rand() % (HEIGHT_CONSOLE - 2) / 2 + 1 + OFFSET_Y;
+	} while (IsValid(snake, temp.x, temp.y) == false || IsValid(snake, temp.x+1, temp.y) == false
+	       ||IsValid(snake, temp.x+2, temp.y) == false||IsValid(snake, temp.x+3, temp.y) == false);//vi tri gate khong trung voi snake
+
+	return temp;
+}
+
 
 GAMEOBJECT* initGameObject() {
 	GAMEOBJECT* gameObject = new GAMEOBJECT;
@@ -7,15 +21,15 @@ GAMEOBJECT* initGameObject() {
 	SNAKE* snake = initSnake();
 	if (snake == NULL) return gameObject;
 	gameObject->snake = snake;
-	
-	POS* fruit = new POS;
-	if (fruit == NULL) return gameObject;
-	generateFruit(gameObject->snake, fruit);
-	gameObject->fruit = fruit;
-	
+
 	POS* gate = generateGate(gameObject->snake);
 	if (gate == NULL) return gameObject;
 	gameObject->gate = gate;
+	
+	POS* fruit = new POS;
+	if (fruit == NULL) return gameObject;
+	generateFruit(gameObject->snake, fruit,gate);
+	gameObject->fruit = fruit;
 	
 	return gameObject;
 }
@@ -38,14 +52,14 @@ SNAKE* initSnake() {
 	return snake;
 }
 
-void generateFruit(SNAKE* snake, POS* fruit){
+void generateFruit(SNAKE* snake, POS* fruit,POS* gate){
 	int x, y;
 	srand((unsigned int)time(NULL));
 	do{
 		x = rand() % (WIDTH_CONSOLE - 2) + 1 + OFFSET_X;
 		y = rand() % (HEIGHT_CONSOLE - 2) + 1 + OFFSET_Y;
 	} 
-	while (IsValid(snake, x, y) == false);
+	while (IsValid(snake, x, y) == false || IsValid1(gate,x,y)==false);
 	fruit->x = x;
 	fruit->y = y;
 	fruit->c = char(fruit_name[snake->vt]);
@@ -56,11 +70,13 @@ POS* generateGate(SNAKE* snake) {
 	if (snake == NULL) return NULL;
 	POS* gate = new POS[4];
 	if (gate == NULL) return NULL;
+
+	POS position = POS_Gate(snake);
 	
-	gate[0].x = 10+ OFFSET_X; gate[0].y = 10+ OFFSET_Y;
-	gate[1].x = 11+ OFFSET_X; gate[1].y = 10+ OFFSET_Y;
-	gate[2].x = 12+ OFFSET_X; gate[2].y = 10+ OFFSET_Y;
-	gate[3].x = 13+ OFFSET_X; gate[3].y = 10+ OFFSET_Y;
+	gate[0].x = position.x+ OFFSET_X  ; gate[0].y = position.y+ OFFSET_Y;
+	gate[1].x = position.x +1+ OFFSET_X; gate[1].y = position.y+ OFFSET_Y;
+	gate[2].x = position.x +2+ OFFSET_X; gate[2].y = position.y+ OFFSET_Y;
+	gate[3].x = position.x +3+ OFFSET_X; gate[3].y = position.y+ OFFSET_Y;
 
 	gate[0].c = static_cast<char>(219);
 	gate[1].c = static_cast<char>(223);

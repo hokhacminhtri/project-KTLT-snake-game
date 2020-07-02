@@ -25,7 +25,7 @@ struct GAMEOBJECT {
 
 GAMEOBJECT* initGameObject();
 SNAKE* initSnake();
-void generateFruit(SNAKE* snake, POS* fruit);
+void generateFruit(SNAKE* snake, POS* fruit,POS* gate);
 POS* generateGate(SNAKE* snake);
 void deleteGameObject(GAMEOBJECT* gameObject);
 

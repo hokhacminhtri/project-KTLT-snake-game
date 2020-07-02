@@ -277,10 +277,12 @@ void NewGame(GAMEOBJECT* gameObject) { // Test
 	timer.currentTime = clock();
 	timer.frameRate = double(1) / 15;
 	timer.deltaTime = 0;
+
 	if (gameObject != NULL && gameObject->snake != NULL) {
 		SNAKE* snake = gameObject->snake;
 		POS* fruit = gameObject->fruit;
 		POS* gate = gameObject->gate;
+		gate = generateGate(snake);
 		if (snake != NULL && fruit != NULL && gate != NULL) {
 			renderSnake(gameObject->snake);
 			if (snake->haveGate == true) renderGate(gate);
@@ -442,6 +444,7 @@ void Update(GAMEOBJECT* gameObject) {
 	SNAKE* snake = gameObject->snake;
 	POS* fruit = gameObject->fruit;
 	POS* gate = gameObject->gate;
+	
 	if (snake->length == 1 && snake->prevEat == false) {
 		drawChar(snake->body[0].x, snake->body[0].y, headColor, space);
 	}
@@ -464,7 +467,7 @@ void Update(GAMEOBJECT* gameObject) {
 						//	drawChar(gate[1].x,gate[1].y,green,space);
 						renderGate(gate, space);
 						newLevel(snake);
-						generateFruit(snake, fruit);
+						generateFruit(snake, fruit,gate);
 						renderFruit(fruit);
 					}
 				}
@@ -475,14 +478,14 @@ void Update(GAMEOBJECT* gameObject) {
 			pushTopTail(snake, fruit);
 			//Tạo fruit hoặc tạo cổng
 			if (snake->length % 8 == 0 && snake->length / 8 == snake->speed) {
-				gate = generateGate(snake);
+				//gate = generateGate(snake);
 				snake->haveGate = true;
 				fruit->x = 0;
 				fruit->y = 0;
 				renderGate(gate);
 			}
 			else {
-				generateFruit(gameObject->snake, gameObject->fruit);
+				generateFruit(gameObject->snake, gameObject->fruit,gameObject->gate);
 				renderFruit(fruit);
 			}
 

@@ -74,3 +74,22 @@ bool IsValid(SNAKE* snake, int x, int y){
 	return true;
 }
 
+//Ham kiem tra vi tri fruit có trung voi Gate
+bool IsValid1(POS* gate, int x, int y)
+{
+	int i;
+	//Kiem tra fruit trung voi cong
+	for (i = 0; i < GATE_SIZE; i++) {
+		if (gate[i].x == x && gate[i].y == y) {
+			return false;
+		}
+	}
+	//Kiem tra cac vi tri xung quanh cong
+	for (i = 0; i < GATE_SIZE; i++) {
+		if (gate[i].x-1 == x || gate[i].y-1 == y|| gate[i].x - 4 == x || gate[i].y +1 == y) {
+			return false;
+		}
+	}
+	return true;
+}
+
