@@ -234,13 +234,13 @@ void OpenGame() {
 	system("pause");
 }
 
-void NewGame() {
+void NewGame() { // 
 	bool isQuit = false;
-	TIMER timer;
+	TIMER timer; // Bo dem fps cua game
 	timer.currentTime = clock();
-	timer.frameRate = double(1) / 15;
+	timer.frameRate = double(1) / 15; // Mac dinh game la 15 fps 
 	timer.deltaTime = 0;
-	GAMEOBJECT* gameObject = initGameObject();
+	GAMEOBJECT* gameObject = initGameObject(); // struct chua nhung doi tuong co trong game
 	if (gameObject != NULL && gameObject->snake != NULL) {
 		SNAKE* snake = gameObject->snake;
 		POS* fruit = gameObject->fruit;
@@ -249,8 +249,9 @@ void NewGame() {
 			renderSnake(gameObject->snake);
 			renderFruit(gameObject->fruit);
 			_getch();
-			while (!isQuit) {
-				if (timer.timeStep()) {
+			while (!isQuit) { // Vong lap cua game
+				// Game chay theo trinh tu Input -> Update -> Render
+				if (timer.timeStep()) { 
 					if (Input(gameObject) == true) break;
 					Update(gameObject);
 					if (checkCollision(gameObject->snake, gameObject->gate)) {
@@ -431,6 +432,7 @@ bool Input(GAMEOBJECT* gameObject) {
 	//	}
 	//}
 
+	// Xu ly de ran khong di nguoc lai duoc
 	if (gameObject->snake->dir == up && gameObject->snake->tmpDir == down) gameObject->snake->dir = down;
 	if (gameObject->snake->dir == down && gameObject->snake->tmpDir == up) gameObject->snake->dir = up;
 	if (gameObject->snake->dir == left && gameObject->snake->tmpDir == right) gameObject->snake->dir = right;
@@ -449,7 +451,7 @@ void Update(GAMEOBJECT* gameObject) {
 		drawChar(snake->body[0].x, snake->body[0].y, headColor, space);
 	}
 	else {
-		if (snake->prevEat == false) {
+		if (snake->prevEat == false) { // Neu khong an fruit thi di chuyen binh thuong
 			drawChar(snake->body[snake->length - 1].x, snake->body[snake->length - 1].y, tailColor, space);
 			for (int i = snake->length - 1; i >= 1; i--) {
 				snake->body[i].x = snake->body[i - 1].x;
@@ -473,7 +475,7 @@ void Update(GAMEOBJECT* gameObject) {
 				}
 			}
 		}
-		else {
+		else { // Neu an fruit thi keo dai vi tri head
 			snake->prevEat = false;
 			pushTopTail(snake, fruit);
 			//Tạo fruit hoặc tạo cổng
