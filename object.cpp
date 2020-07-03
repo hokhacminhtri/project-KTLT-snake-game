@@ -15,7 +15,7 @@ POS POS_Gate(SNAKE* snake)
 
 
 GAMEOBJECT* initGameObject() {
-	GAMEOBJECT* gameObject = new GAMEOBJECT;　// Khoi tao game object
+	GAMEOBJECT* gameObject = new GAMEOBJECT; // Khoi tao game object
 	if (gameObject == NULL) return NULL;
 	
 	SNAKE* snake = initSnake(); // Khoi tao snake
@@ -330,7 +330,7 @@ void enterGate(SNAKE* snake,POS* gate){
 void newLevel(SNAKE* snake){
 	PlaySound(TEXT("NextLevel"), NULL, SND_ASYNC);
 	snake->speed+=1;
-	if (snake->vt == strlen(fruit_name)) snake->vt = 0;　// khi end day mssv thi quay lai vi tri ban dau
+	if (snake->vt == strlen(fruit_name)) snake->vt = 0; // khi end day mssv thi quay lai vi tri ban dau
 	if (snake->speed == MAX_LEVEL) { // Khi max level thi reset level
 		snake->speed = 1;
 		POS* newBody = (POS*)realloc(snake->body, 1 * sizeof(POS));
