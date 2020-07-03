@@ -1,5 +1,8 @@
 #pragma once
 
+#ifndef _PARAMETER_
+#define _PARAMETER_
+
 #include<stdio.h>
 #include<windows.h>
 #include<conio.h>
@@ -41,3 +44,7 @@ void drawChar(int x, int y, int color, int character); // Ham ve ki tu theo toa 
 void drawStr(int x, int y, int color, string longString); // Ham ve chuoi theo toa do va mau
 bool IsValid(SNAKE* snake, int x, int y);
 bool IsValid1(POS* gate, int x, int y);
+
+#endif // !_PARAMETER_
+
+

@@ -15,7 +15,7 @@ POS POS_Gate(SNAKE* snake)
 
 
 GAMEOBJECT* initGameObject() {
-	GAMEOBJECT* gameObject = new GAMEOBJECT;　// Khoi tao game object
+	GAMEOBJECT* gameObject = new GAMEOBJECT;
 	if (gameObject == NULL) return NULL;
 	
 	SNAKE* snake = initSnake(); // Khoi tao snake
@@ -136,16 +136,6 @@ void renderGate(POS* gate, char c)
 		drawChar(gate[i].x, gate[i].y, tailColor, c);
 	}
 }
-
-//void DeathEffect(SNAKE* snake)
-//{
-//	drawChar(snake->body[0].x, snake->body[0].y, headColor, 'x');
-//	Sleep(100);
-//	for (int i = 1; i < snake->length; i++) {
-//		drawChar(snake->body[i].x, snake->body[i].y, tailColor, 'x');
-//		Sleep(100);
-//	}
-//}
 
 void DeathEffect(SNAKE* snake)
 {
@@ -271,7 +261,6 @@ void DeathEffect(SNAKE* snake)
 }
 
 void pushTopTail(SNAKE* snake, POS* newTail) { // Tang kich thuoc khi an fruit
-	//PlaySound(TEXT("EatFruit"), NULL, SND_ASYNC);
 	POS* newBody = (POS*)realloc(snake->body, (snake->length + 1) * sizeof(POS));
 	if (newBody != NULL) {
 		newBody[snake->length].c = newTail->c;
@@ -330,7 +319,7 @@ void enterGate(SNAKE* snake,POS* gate){
 void newLevel(SNAKE* snake){
 	PlaySound(TEXT("NextLevel"), NULL, SND_ASYNC);
 	snake->speed+=1;
-	if (snake->vt == strlen(fruit_name)) snake->vt = 0;　// khi end day mssv thi quay lai vi tri ban dau
+	if (snake->vt == strlen(fruit_name)) snake->vt = 0;
 	if (snake->speed == MAX_LEVEL) { // Khi max level thi reset level
 		snake->speed = 1;
 		POS* newBody = (POS*)realloc(snake->body, 1 * sizeof(POS));

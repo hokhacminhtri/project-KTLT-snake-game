@@ -1,5 +1,8 @@
 #pragma once
 
+#ifndef _GAME_
+#define _GAME_
+
 #include "parameter.h"
 #include "saveandload.h"
 #include <mmsystem.h>	//thu vien chen nhac
@@ -19,4 +22,7 @@ void Update(GAMEOBJECT* gameObject);
 void Render(GAMEOBJECT* gameObject);
 bool EndGame(SNAKE* snake);		//xu ly ket thuc game
 void GuideTable();	//bang huong dan choi game
+
+#endif // !_GAME_
+
 

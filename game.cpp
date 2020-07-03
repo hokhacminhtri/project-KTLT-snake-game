@@ -477,7 +477,9 @@ void Update(GAMEOBJECT* gameObject) {
 		}
 		else { // Neu an fruit thi keo dai vi tri head
 			snake->prevEat = false;
+			//PlaySound(TEXT("EatFruit"), NULL, SND_ASYNC);
 			pushTopTail(snake, fruit);
+			//PlaySound(TEXT("GameMusic"), NULL, SND_ASYNC);
 			//Tạo fruit hoặc tạo cổng
 			if (snake->length % 8 == 0 && snake->length / 8 == snake->speed) {
 				//gate = generateGate(snake);
