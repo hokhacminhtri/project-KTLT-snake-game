@@ -9,14 +9,14 @@ int SaveGame(GAMEOBJECT* gameObject)
 	GotoXY(OFFSET_X + 20, 25);
 	cout << "Nhap ten file save: ";
 	cin >> saveFile;
-	ofstream outputStream(saveFile, ios::trunc);
+	ofstream outputStream(saveFile, ios::trunc);	//tao hoac mo file, ios::trunc de xoa content neu file da co san
 	unsigned int i;
 	outputStream << gameObject->fruit->x << "-" << gameObject->fruit->y << "-" << gameObject->fruit->c << endl;
 	for (i = 0; i < 4; i++)
-		outputStream << gameObject->gate[i].x << "-" << gameObject->gate[i].y << "-" << gameObject->gate[i].c << endl;
+		outputStream << gameObject->gate[i].x << "-" << gameObject->gate[i].y << "-" << gameObject->gate[i].c << endl;	//position cua gate
 	outputStream << gameObject->snake->length << "-" << gameObject->snake->speed << "-" << gameObject->snake->dir << "-" << gameObject->snake->tmpDir << "-" << gameObject->snake->haveGate << "-" << gameObject->snake->prevEat << "-" << gameObject->snake->vt << endl;
 	for (i = 0; i < gameObject->snake->length; i++)
-		outputStream << gameObject->snake->body[i].x << "-" << gameObject->snake->body[i].y << "-" << gameObject->snake->body[i].c << endl;
+		outputStream << gameObject->snake->body[i].x << "-" << gameObject->snake->body[i].y << "-" << gameObject->snake->body[i].c << endl;	// position cua cac phan co the con ran
 	outputStream.close();
 	return 1;
 }
