@@ -185,11 +185,24 @@ void Menu() {
 		system("cls");
 		TextColor(14);
 
+		GotoXY(40, 8);
+		cout << "Do an Snake - Mon Ky thuat lap trinh - Lop 19CTT3" << endl;
+		GotoXY(50, 9);
+		cout << "GVHD: Thay Truong Toan Thinh" << endl;
+		GotoXY(60, 11);
+		cout << "Nhom 2" << endl;
+		GotoXY(50, 12);
 		cout << "18120586 - Ho Hoang Thuong" << endl;
+		GotoXY(50, 13);
 		cout << "18120609 - Ho Khac Minh Tri" << endl;
+		GotoXY(50, 14);
 		cout << "18120598 - Huynh Gia Toai" << endl;
+		GotoXY(50, 15);
 		cout << "18120322 - Luu Thien Duc" << endl;
+		GotoXY(50, 16);
 		cout << "18120316 - Pham Ngoc Diep" << endl;
+		
+		
 		cout << endl;
 
 		while (1)
@@ -203,6 +216,7 @@ void Menu() {
 		Menu();
 	}
 	if (option1 == 3) {
+		//load game
 		system("cls");
 		TextColor(10);
 		GotoXY(50, 10);
@@ -214,7 +228,6 @@ void Menu() {
 		DrawBoard(OFFSET_X, OFFSET_Y, WIDTH_CONSOLE, HEIGHT_CONSOLE);
 		NewGame(gameObject);
 		Menu();
-		//load game
 	}
 	if (option1 == 4) {
 		//thoat game
@@ -314,16 +327,16 @@ bool Input(GAMEOBJECT* gameObject) {
 	if (_kbhit()) {
 		int control = _getch();
 		//xu ly dieu khien snake (cac phim mui ten va WASD)
-		if ((GetAsyncKeyState(VK_UP) & 0x8000) != 0 || (GetAsyncKeyState(VK_UP) & 0x8000) || control == (int)'w')
+		if ((GetAsyncKeyState(VK_UP) & 0x8000) != 0 || (GetAsyncKeyState(VK_UP) & 0x8000) || control == (int)'w' || control == (int)'W')
 			gameObject->snake->dir = up;
-		else if ((GetAsyncKeyState(VK_LEFT) & 0x8000) != 0 || (GetAsyncKeyState(VK_LEFT) & 0x8000) || control == (int)'a')
+		else if ((GetAsyncKeyState(VK_LEFT) & 0x8000) != 0 || (GetAsyncKeyState(VK_LEFT) & 0x8000) || control == (int)'a' || control == (int)'A')
 			gameObject->snake->dir = left;
-		else if ((GetAsyncKeyState(VK_DOWN) & 0x8000) != 0 || GetAsyncKeyState(VK_DOWN) & 0x8000 || control == (int)'s')
+		else if ((GetAsyncKeyState(VK_DOWN) & 0x8000) != 0 || GetAsyncKeyState(VK_DOWN) & 0x8000 || control == (int)'s' || control == (int)'S')
 			gameObject->snake->dir = down;
-		else if ((GetAsyncKeyState(VK_RIGHT) & 0x8000) != 0 || GetAsyncKeyState(VK_LEFT) & 0x8000 || control == (int)'d')
+		else if ((GetAsyncKeyState(VK_RIGHT) & 0x8000) != 0 || GetAsyncKeyState(VK_LEFT) & 0x8000 || control == (int)'d' || control == (int)'D')
 			gameObject->snake->dir = right;
 
-		if (control == (int)'t') {	//tai game
+		if (control == (int)'t' || control == (int)'T') {	//tai game
 			GotoXY(OFFSET_X + 20, 25);
 			string saveFile;
 			cout << "Nhap ten file load: ";
@@ -336,7 +349,7 @@ bool Input(GAMEOBJECT* gameObject) {
 
 			Menu();
 		}
-		else if (control == (int)'p') { //dung game khi dang choi (pause)
+		else if (control == (int)'p' || control == (int)'P') { //dung game khi dang choi (pause)
 			GotoXY(OFFSET_X + WIDTH_CONSOLE / 2 - 2, OFFSET_Y - 1);
 			TextColor(10);
 			cout << "PAUSE";
@@ -347,10 +360,10 @@ bool Input(GAMEOBJECT* gameObject) {
 					break;
 				}
 		}
-		else if (control == (int)'x') {	//tro ve man hinh menu khi dang choi
+		else if (control == (int)'x' || control == (int)'X') {	//tro ve man hinh menu khi dang choi
 			return true;
 		}
-		else if (control == (int)'l') {	//luu game
+		else if (control == (int)'l' || control == (int)'L') {	//luu game
 			while (true)
 				if (SaveGame(gameObject)) break;
 			GotoXY(OFFSET_X + 20, 26);
@@ -360,77 +373,13 @@ bool Input(GAMEOBJECT* gameObject) {
 			GotoXY(OFFSET_X + 20, 26);
 			cout << "                                            ";
 		}
-		else if (control == 'm') {	//tat nhac
+		else if (control == 'm' || control == 'M') {	//tat nhac
 			PlaySound(NULL, NULL, NULL);
 		}
-		else if (control == 'u') {
+		else if (control == 'u' || control == 'U') {	//bat nhac lai
 			PlaySound(TEXT("GameMusic"), NULL, SND_ASYNC);
 		}
 	}
-
-	////dieu khien bang WASD
-	//if (_kbhit()) {
-	//	int control = _getch();
-	//	if (control == (int)'w') {
-	//		gameObject->snake->dir = up;
-	//	}
-	//	else if (control == (int)'a') {
-	//		gameObject->snake->dir = left;
-	//	}
-	//	else if (control == (int)'s') {
-	//		gameObject->snake->dir = down;
-	//	}
-	//	else if (control == (int)'d') {
-	//		gameObject->snake->dir = right;
-	//	}
-	//}
-
-	//if (_kbhit()) {
-	//	int n = _getch();
-	//	if (n == int('t')) {	//tai game
-	//		GotoXY(OFFSET_X + 20, 25);
-	//		string saveFile;
-	//		cout << "Nhap ten file load: ";
-	//		cin >> saveFile;
-	//		GAMEOBJECT* gameObject = LoadGame(saveFile);
-	//		system("cls");
-	//		TextColor(10);
-	//		DrawBoard(OFFSET_X, OFFSET_Y, WIDTH_CONSOLE, HEIGHT_CONSOLE);
-	//		NewGame(gameObject);
-
-	//		Menu();
-	//	}
-	//	else if (n == int('p')) { //dung game khi dang choi (pause)
-	//		GotoXY(OFFSET_X + WIDTH_CONSOLE / 2 - 2, OFFSET_Y - 1);
-	//		TextColor(10);
-	//		cout << "PAUSE";
-	//		while (true)
-	//			if ((GetAsyncKeyState(continueGame) & 0x8000) != 0 || GetAsyncKeyState(continueGame) & 0x8000) {
-	//				GotoXY(OFFSET_X + WIDTH_CONSOLE / 2 - 2, OFFSET_Y - 1);
-	//				cout << "     ";
-	//				break;
-	//			}
-	//	}
-	//	else if (n == (int)'x') {	//tro ve man hinh menu khi dang choi
-	//		return true;
-	//	}
-	//	else if (n == (int)'l') {	//luu game
-	//		while (true)
-	//			if (SaveGame(gameObject)) break;
-	//		GotoXY(OFFSET_X + 20, 26);
-	//		system("pause");
-	//		GotoXY(OFFSET_X + 20, 25);
-	//		cout << "                                            ";
-	//		GotoXY(OFFSET_X + 20, 26);
-	//		cout << "                                            ";
-	//	}
-	//	else if (n == 'm') {	//tat nhac
-	//		PlaySound(NULL, NULL, NULL);
-	//	}
-	//	else if (n == 'u') {
-	//		PlaySound(TEXT("GameMusic"), NULL, SND_ASYNC);
-	//	}
-	//}
 
 	// Xu ly de ran khong di nguoc lai duoc
 	if (gameObject->snake->dir == up && gameObject->snake->tmpDir == down) gameObject->snake->dir = down;
@@ -477,9 +426,7 @@ void Update(GAMEOBJECT* gameObject) {
 		}
 		else { // Neu an fruit thi keo dai vi tri head
 			snake->prevEat = false;
-			//PlaySound(TEXT("EatFruit"), NULL, SND_ASYNC);
 			pushTopTail(snake, fruit);
-			//PlaySound(TEXT("GameMusic"), NULL, SND_ASYNC);
 			//Tạo fruit hoặc tạo cổng
 			if (snake->length % 8 == 0 && snake->length / 8 == snake->speed) {
 				//gate = generateGate(snake);
@@ -532,19 +479,23 @@ void GuideTable() {
 	cout << "====================";
 	TextColor(rand() % 14 + 1);
 	GotoXY(WIDTH_CONSOLE + 5 + OFFSET_X, 11);
-	cout << "Nhan (t) de tai game (Nhap duoi file .txt)" << endl;
+	cout << "Nhan (t) de tai game" << endl;
+	GotoXY(WIDTH_CONSOLE + 5 + OFFSET_X, 12);
+	cout << "(Nhap duoi file .txt)" << endl;
 	TextColor(rand() % 14 + 1);
-	GotoXY(WIDTH_CONSOLE + 5 + OFFSET_X, 13);
-	cout << "Nhan (l) de luu game (Nhap duoi file .txt)" << endl;
-	TextColor(rand() % 14 + 1);
+	GotoXY(WIDTH_CONSOLE + 5 + OFFSET_X, 14);
+	cout << "Nhan (l) de luu game" << endl;
 	GotoXY(WIDTH_CONSOLE + 5 + OFFSET_X, 15);
-	cout << "Nhan (m) de tat nhac" << endl;
+	cout << "(Nhap duoi file .txt)" << endl;
 	TextColor(rand() % 14 + 1);
 	GotoXY(WIDTH_CONSOLE + 5 + OFFSET_X, 17);
-	cout << "Nhan (u) de bat nhac" << endl;
+	cout << "Nhan (m) de tat nhac" << endl;
 	TextColor(rand() % 14 + 1);
 	GotoXY(WIDTH_CONSOLE + 5 + OFFSET_X, 19);
-	cout << "Nhan (x) de thoat game khi dang choi" << endl;
+	cout << "Nhan (u) de bat nhac" << endl;
+	TextColor(rand() % 14 + 1);
+	GotoXY(WIDTH_CONSOLE + 5 + OFFSET_X, 21);
+	cout << "Nhan (x) de thoat game" << endl;
 }
 
 
