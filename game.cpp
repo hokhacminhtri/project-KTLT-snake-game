@@ -201,8 +201,8 @@ void Menu() {
 		cout << "18120322 - Luu Thien Duc" << endl;
 		GotoXY(50, 16);
 		cout << "18120316 - Pham Ngoc Diep" << endl;
-		
-		
+
+
 		cout << endl;
 
 		while (1)
@@ -264,7 +264,7 @@ void NewGame() { //
 			_getch();
 			while (!isQuit) { // Vong lap cua game
 				// Game chay theo trinh tu Input -> Update -> Render
-				if (timer.timeStep()) { 
+				if (timer.timeStep()) {
 					if (Input(gameObject) == true) break;
 					Update(gameObject);
 					if (checkCollision(gameObject->snake, gameObject->gate)) {
@@ -323,17 +323,17 @@ void NewGame(GAMEOBJECT* gameObject) { // Test
 	deleteGameObject(gameObject);
 }
 
-bool Input(GAMEOBJECT* gameObject) {	
+bool Input(GAMEOBJECT* gameObject) {
 	if (_kbhit()) {
 		int control = _getch();
-		//xu ly dieu khien snake (cac phim mui ten va WASD)
+		//xu ly dieu khien snake (cac phim mui ten va W-A-S-D)
 		if ((GetAsyncKeyState(VK_UP) & 0x8000) != 0 || (GetAsyncKeyState(VK_UP) & 0x8000) || control == (int)'w' || control == (int)'W')
 			gameObject->snake->dir = up;
 		else if ((GetAsyncKeyState(VK_LEFT) & 0x8000) != 0 || (GetAsyncKeyState(VK_LEFT) & 0x8000) || control == (int)'a' || control == (int)'A')
 			gameObject->snake->dir = left;
-		else if ((GetAsyncKeyState(VK_DOWN) & 0x8000) != 0 || GetAsyncKeyState(VK_DOWN) & 0x8000 || control == (int)'s' || control == (int)'S')
+		else if ((GetAsyncKeyState(VK_DOWN) & 0x8000) != 0 || (GetAsyncKeyState(VK_DOWN) & 0x8000) || control == (int)'s' || control == (int)'S')
 			gameObject->snake->dir = down;
-		else if ((GetAsyncKeyState(VK_RIGHT) & 0x8000) != 0 || GetAsyncKeyState(VK_LEFT) & 0x8000 || control == (int)'d' || control == (int)'D')
+		else if ((GetAsyncKeyState(VK_RIGHT) & 0x8000) != 0 || (GetAsyncKeyState(VK_RIGHT) & 0x8000) || control == (int)'d' || control == (int)'D')
 			gameObject->snake->dir = right;
 
 		if (control == (int)'t' || control == (int)'T') {	//tai game
@@ -349,7 +349,7 @@ bool Input(GAMEOBJECT* gameObject) {
 
 			Menu();
 		}
-		else if (control == (int)'p' || control == (int)'P') { //dung game khi dang choi (pause)
+		else if (control == (int)'p') { //dung game khi dang choi (pause)
 			GotoXY(OFFSET_X + WIDTH_CONSOLE / 2 - 2, OFFSET_Y - 1);
 			TextColor(10);
 			cout << "PAUSE";
@@ -373,19 +373,23 @@ bool Input(GAMEOBJECT* gameObject) {
 			GotoXY(OFFSET_X + 20, 26);
 			cout << "                                            ";
 		}
-		else if (control == 'm' || control == 'M') {	//tat nhac
+		else if (control == (int)'z' || control == (int)'Z') {	//tat nhac
 			PlaySound(NULL, NULL, NULL);
 		}
-		else if (control == 'u' || control == 'U') {	//bat nhac lai
+		else if (control == (int)'u' || control == (int)'U') {	//bat nhac lai
 			PlaySound(TEXT("GameMusic"), NULL, SND_ASYNC);
 		}
 	}
 
 	// Xu ly de ran khong di nguoc lai duoc
-	if (gameObject->snake->dir == up && gameObject->snake->tmpDir == down) gameObject->snake->dir = down;
-	if (gameObject->snake->dir == down && gameObject->snake->tmpDir == up) gameObject->snake->dir = up;
-	if (gameObject->snake->dir == left && gameObject->snake->tmpDir == right) gameObject->snake->dir = right;
-	if (gameObject->snake->dir == right && gameObject->snake->tmpDir == left) gameObject->snake->dir = left;
+	if (gameObject->snake->dir == up && gameObject->snake->tmpDir == down)
+		gameObject->snake->dir = down;
+	if (gameObject->snake->dir == down && gameObject->snake->tmpDir == up)
+		gameObject->snake->dir = up;
+	if (gameObject->snake->dir == left && gameObject->snake->tmpDir == right)
+		gameObject->snake->dir = right;
+	if (gameObject->snake->dir == right && gameObject->snake->tmpDir == left)
+		gameObject->snake->dir = left;
 	gameObject->snake->tmpDir = gameObject->snake->dir;
 
 	return 0;
@@ -395,7 +399,7 @@ void Update(GAMEOBJECT* gameObject) {
 	SNAKE* snake = gameObject->snake;
 	POS* fruit = gameObject->fruit;
 	POS* gate = gameObject->gate;
-	
+
 	if (snake->length == 1 && snake->prevEat == false) {
 		drawChar(snake->body[0].x, snake->body[0].y, headColor, space);
 	}
@@ -415,10 +419,9 @@ void Update(GAMEOBJECT* gameObject) {
 					if ((gate[1].x == snake->body[snake->length - 1].x && gate[1].y == snake->body[snake->length - 1].y)
 						|| gate[2].x == snake->body[snake->length - 1].x && gate[2].y == snake->body[snake->length - 1].y
 						) {
-						//	drawChar(gate[1].x,gate[1].y,green,space);
 						renderGate(gate, space);
 						newLevel(snake);
-						generateFruit(snake, fruit,gate);
+						generateFruit(snake, fruit, gate);
 						renderFruit(fruit);
 					}
 				}
@@ -427,7 +430,7 @@ void Update(GAMEOBJECT* gameObject) {
 		else { // Neu an fruit thi keo dai vi tri head
 			snake->prevEat = false;
 			pushTopTail(snake, fruit);
-			//Tạo fruit hoặc tạo cổng
+			//tao fruit hoac tao cong
 			if (snake->length % 8 == 0 && snake->length / 8 == snake->speed) {
 				//gate = generateGate(snake);
 				snake->haveGate = true;
@@ -436,17 +439,21 @@ void Update(GAMEOBJECT* gameObject) {
 				renderGate(gate);
 			}
 			else {
-				generateFruit(gameObject->snake, gameObject->fruit,gameObject->gate);
+				generateFruit(gameObject->snake, gameObject->fruit, gameObject->gate);
 				renderFruit(fruit);
 			}
 
 		}
 	}
 
-	if (snake->dir == up) snake->body[0].y--;
-	else if (snake->dir == left) snake->body[0].x--;
-	else if (snake->dir == down) snake->body[0].y++;
-	else if (snake->dir == right) snake->body[0].x++;
+	if (snake->dir == up)
+		snake->body[0].y--;
+	else if (snake->dir == left)
+		snake->body[0].x--;
+	else if (snake->dir == down)
+		snake->body[0].y++;
+	else if (snake->dir == right)
+		snake->body[0].x++;
 	if (snake->body[0].x == fruit->x && snake->body[0].y == fruit->y) {
 		snake->prevEat = true;
 	}
@@ -475,27 +482,32 @@ bool EndGame(SNAKE* snake)
 
 void GuideTable() {
 	TextColor(rand() % 14 + 1);
-	GotoXY(WIDTH_CONSOLE + 5 + OFFSET_X, 9);
+	GotoXY(WIDTH_CONSOLE + 4 + OFFSET_X, 7);
 	cout << "====================";
 	TextColor(rand() % 14 + 1);
-	GotoXY(WIDTH_CONSOLE + 5 + OFFSET_X, 11);
+	GotoXY(WIDTH_CONSOLE + 4 + OFFSET_X, 9);
 	cout << "Nhan (t) de tai game" << endl;
-	GotoXY(WIDTH_CONSOLE + 5 + OFFSET_X, 12);
+	GotoXY(WIDTH_CONSOLE + 4 + OFFSET_X, 10);
 	cout << "(Nhap duoi file .txt)" << endl;
 	TextColor(rand() % 14 + 1);
-	GotoXY(WIDTH_CONSOLE + 5 + OFFSET_X, 14);
+	GotoXY(WIDTH_CONSOLE + 4 + OFFSET_X, 12);
 	cout << "Nhan (l) de luu game" << endl;
-	GotoXY(WIDTH_CONSOLE + 5 + OFFSET_X, 15);
+	GotoXY(WIDTH_CONSOLE + 4 + OFFSET_X, 13);
 	cout << "(Nhap duoi file .txt)" << endl;
 	TextColor(rand() % 14 + 1);
-	GotoXY(WIDTH_CONSOLE + 5 + OFFSET_X, 17);
-	cout << "Nhan (m) de tat nhac" << endl;
+	GotoXY(WIDTH_CONSOLE + 4 + OFFSET_X, 15);
+	cout << "Nhan (z) de tat nhac" << endl;
 	TextColor(rand() % 14 + 1);
-	GotoXY(WIDTH_CONSOLE + 5 + OFFSET_X, 19);
+	GotoXY(WIDTH_CONSOLE + 4 + OFFSET_X, 17);
 	cout << "Nhan (u) de bat nhac" << endl;
 	TextColor(rand() % 14 + 1);
-	GotoXY(WIDTH_CONSOLE + 5 + OFFSET_X, 21);
+	GotoXY(WIDTH_CONSOLE + 4 + OFFSET_X, 19);
 	cout << "Nhan (x) de thoat game" << endl;
+	TextColor(rand() % 14 + 1);
+	GotoXY(WIDTH_CONSOLE + 4 + OFFSET_X, 21);
+	cout << "Nhan (p) de PAUSE game" << endl;
+	GotoXY(WIDTH_CONSOLE + 4 + OFFSET_X, 23);
+	cout << "Nhan (c) de tiep tuc" << endl;
 }
 
 

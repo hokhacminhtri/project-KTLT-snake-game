@@ -25,7 +25,7 @@ void TextColor(int color)
 }
 
 
-void drawChar(int x, int y, int color, int character) { 
+void drawChar(int x, int y, int color, int character) {
 	char symbol = character;
 	HANDLE hStdout;
 	COORD destCoord;
@@ -64,10 +64,10 @@ void drawStr(int x, int y, int color, string longString) {
 	// Remove cursor 
 }
 
-bool IsValid(SNAKE* snake, int x, int y){
+bool IsValid(SNAKE* snake, int x, int y) {
 	int i;
-	for (i = 0; i < snake->length; i++){
-		if (snake->body[i].x == x && snake->body[i].y == y){
+	for (i = 0; i < snake->length; i++) {
+		if (snake->body[i].x == x && snake->body[i].y == y) {
 			return false;
 		}
 	}
@@ -86,7 +86,7 @@ bool IsValid1(POS* gate, int x, int y)
 	}
 	//Kiem tra cac vi tri xung quanh cong
 	for (i = 0; i < GATE_SIZE; i++) {
-		if (gate[i].x-1 == x || gate[i].y-1 == y|| gate[i].x - 4 == x || gate[i].y +1 == y) {
+		if (gate[i].x - 1 == x || gate[i].y - 1 == y || gate[i].x - 4 == x || gate[i].y + 1 == y) {
 			return false;
 		}
 	}

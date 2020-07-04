@@ -42,7 +42,6 @@ GAMEOBJECT* LoadGame(string saveFile)
 		gameObject->fruit->y = stoi(fruit_y);
 		getline(ss_fruit, fruit_c, '-');
 		gameObject->fruit->c = fruit_c[0];
-		// cout << gameObject->fruit->x << "-" << gameObject->fruit->y << "-" << gameObject->fruit->c << endl;
 		// Read gate info
 		for (i = 0; i < 4; i++)
 		{
@@ -54,7 +53,6 @@ GAMEOBJECT* LoadGame(string saveFile)
 			gameObject->gate[i].x = stoi(gate_x);
 			gameObject->gate[i].y = stoi(gate_y);
 			gameObject->gate[i].c = gate_c[0];
-			// cout << gameObject->gate[i].x << "-" << gameObject->gate[i].y << "-" << gameObject->gate[i].c << endl;
 		}
 		// Read snake info
 		getline(inputStream, readingLine);
@@ -75,7 +73,6 @@ GAMEOBJECT* LoadGame(string saveFile)
 		else gameObject->snake->prevEat = false;
 		getline(ss_snake, vt, '-');
 		gameObject->snake->vt = stoi(vt);
-		// cout << length << "-" << speed << "-" << dir << "-" << tmpDir << "-" << haveGate << "-" << prevEat << "-" << vt << endl;
 
 		gameObject->snake->body = (POS*)malloc(gameObject->snake->length * sizeof(POS));
 		i = 0;
@@ -88,7 +85,6 @@ GAMEOBJECT* LoadGame(string saveFile)
 			gameObject->snake->body[i].x = stoi(snake_x);
 			gameObject->snake->body[i].y = stoi(snake_y);
 			gameObject->snake->body[i].c = snake_c[0];
-			// cout << gameObject->snake->body[i].x << "-" << gameObject->snake->body[i].y << "-" << gameObject->snake->body[i].c << endl;
 			i++;
 		}
 	}
